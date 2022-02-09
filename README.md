@@ -39,10 +39,12 @@ Send a *GET* request to `http://localhost:8080/orders/{orderId}`, and you should
 
 Send a *POST* request to `localhost:8080/calculateCredit with the body 
 
+```
 {
   "customerId": 1234,
   "creditAmount": 43000
 }
+```
 
 The service will response the verdict id, that can be used as below:
 
