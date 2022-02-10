@@ -4,44 +4,54 @@ import swa.bankservice.model.OrderState;
 import swa.bankservice.model.RejectionReason;
 
 public class OrderResponse {
-  private long orderId;
-  private OrderState orderState;
-  private RejectionReason rejectionReason;
+	private long orderId;
+	private OrderState orderState;
+	private int interestRate;
+	private RejectionReason rejectionReason;
 
-  public OrderResponse() {
-  }
+	public OrderResponse() {
+	}
 
-  public OrderResponse(long orderId) {
-    this.orderId = orderId;
-  }
+	public OrderResponse(long orderId) {
+		this.orderId = orderId;
+	}
   
-  public OrderResponse(Long orderId, OrderState orderState, RejectionReason rejectionReason) {
-    this.orderId = orderId;
-    this.orderState = orderState;
-    this.rejectionReason = rejectionReason;
-  }
+  	public OrderResponse(Long orderId, OrderState orderState, int interestRate, RejectionReason rejectionReason) {
+  		this.orderId = orderId;
+  		this.orderState = orderState;
+  		this.interestRate = interestRate;
+  		this.rejectionReason = rejectionReason;
+  	}
 
-  public long getOrderId() {
-    return orderId;
-  }
+  	public long getOrderId() {
+  		return orderId;
+  	}
   
-  public void setOrderId(Long orderId) {
-    this.orderId = orderId;
-  }
+  	public void setOrderId(Long orderId) {
+	  this.orderId = orderId;
+  	}
 
-  public OrderState getOrderState() {
-    return orderState;
-  }
+  	public OrderState getOrderState() {
+  		return orderState;
+  	}
 
-  public void setOrderState(OrderState orderState) {
-    this.orderState = orderState;
-  }
+  	public void setOrderState(OrderState orderState) {
+  		this.orderState = orderState;
+  	}
+  
+	public int getInterestRate() {
+		return interestRate;
+	}
 
-  public RejectionReason getRejectionReason() {
-    return rejectionReason;
-  }
+	public void setInterestRate(int interestRate) {
+		this.interestRate = interestRate;
+	}
 
-  public void setRejectionReason(RejectionReason rejectionReason) {
-    this.rejectionReason = rejectionReason;
-  }
+	public RejectionReason getRejectionReason() {
+		return rejectionReason;
+	}
+
+	public void setRejectionReason(RejectionReason rejectionReason) {
+	    this.rejectionReason = rejectionReason;
+	}
 }
