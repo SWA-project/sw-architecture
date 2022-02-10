@@ -51,6 +51,14 @@ public class CreditCardOrder {
     this.state = OrderState.REJECTED;
     this.rejectionReason = rejectionReason;
   }
+  
+  public OrderDetails getOrderDetails() {
+	return orderDetails;
+  }
+
+  public void setOrderDetails(OrderDetails orderDetails) {
+	this.orderDetails = orderDetails;
+  }
 
   public OrderState getState() {
     return state;
