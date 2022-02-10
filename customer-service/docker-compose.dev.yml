@@ -39,9 +39,6 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
-    links:
-      - kafka
-      - mysql
     ports: 
       - 3000:3000
     volumes:
