@@ -40,19 +40,19 @@ public class Controller {
   }
   
   @RequestMapping(value="/orders/{orderId}", method = RequestMethod.GET)
-  public ResponseEntity<OrderResponse> getOrder(@PathVariable Long orderId) {
+  public ResponseEntity<CreditCardOrder> getOrder(@PathVariable Long orderId) {
     return orderRepository
             .findById(orderId)
-            .map(o -> new ResponseEntity<>(new OrderResponse(o.getId(), o.getState(), o.getOrderDetails().getInterestRate(), o.getRejectionReason()), HttpStatus.OK))
+            .map(o -> new ResponseEntity<>(o, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
+  
   @RequestMapping(value="/orders/customer/{customerId}", method = RequestMethod.GET)
-  public ResponseEntity<List<OrderResponse>> getOrdersByCustomerId(@PathVariable Long customerId) {
-    return new ResponseEntity<List<OrderResponse>>(orderRepository
+  public ResponseEntity<List<CreditCardOrder>> getOrdersByCustomerId(@PathVariable Long customerId) {
+    return new ResponseEntity<List<CreditCardOrder>>(orderRepository
             .findAllByOrderDetailsCustomerId(customerId)
             .stream()
-            .map(o -> new OrderResponse(o.getId(), o.getState(), o.getOrderDetails().getInterestRate(), o.getRejectionReason()))
             .collect(Collectors.toList()), HttpStatus.OK);
   }
 }
