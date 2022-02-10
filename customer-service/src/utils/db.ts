@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize-typescript';
 import { DATABASE_URL } from './config';
-import { Customer, CustomerCreditCard, CustomerBonusPoints } from '../models';
+import { Customer, CustomerBonusPoints } from '../models';
 const sequelize = new Sequelize(DATABASE_URL, {
   dialectOptions: {
   },
-  models: [Customer, CustomerCreditCard, CustomerBonusPoints]
+  models: [Customer, CustomerBonusPoints]
 });
 
 const connectToDatabase = async () => {
