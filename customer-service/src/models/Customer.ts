@@ -3,7 +3,7 @@ import { Model, Table, Column, DataType, HasMany } from 'sequelize-typescript';
 
 import { CustomerCreationAttributes, CustomerAttributes } from '../types/models';
 
-import CustomerCreditCard from './CustomerCreditCard';
+import { CustomerBonusPoints, CustomerCreditCard } from './';
 
 @Table
 class Customer extends Model<CustomerAttributes, CustomerCreationAttributes> {
@@ -31,6 +31,9 @@ class Customer extends Model<CustomerAttributes, CustomerCreationAttributes> {
 
   @HasMany(() => CustomerCreditCard)
   creditCards?: CustomerCreditCard[];
+
+  @HasMany(() => CustomerBonusPoints)
+  bonusPoints?: CustomerBonusPoints[];
 
 }
 
