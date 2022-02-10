@@ -1,6 +1,26 @@
 # Customer service
 
-## DEV env
+## DEV env using docker
+
+### Eventuate tram 
+
+Run:
+
+```
+export DOCKER_HOST_IP=LOCAL_MACHINE_IP
+```
+
+```
+docker compose -f docker-compose.eventuate-tram.yml up --build
+```
+
+Reset all:
+
+```
+docker compose -f docker-compose.eventuate-tram.yml down --volumes
+```
+
+### Customer-service
 
 Run:
 
@@ -26,21 +46,4 @@ Reset all, including db:
 docker compose -f docker-compose.dev.yml down --volumes
 ```
 
-## Eventuate tram
-
-Run:
-
-```
-export DOCKER_HOST_IP=LOCAL_MACHINE_IP
-```
-
-```
-docker compose -f docker-compose.eventuate-tram.yml up --build
-```
-
-Reset all:
-
-```
-docker compose -f docker-compose.eventuate-tram.yml down --volumes
-```
 
