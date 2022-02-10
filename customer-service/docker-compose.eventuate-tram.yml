@@ -49,7 +49,7 @@ services:
     ports:
       - "8099:8080"
     depends_on:
-      - mssql
+      - mysql
       - kafka
       - zookeeper
     environment:
