@@ -10,7 +10,9 @@ const channelMapping = new DefaultChannelMapping(new Map());
 const messageProducer = new MessageProducer({ channelMapping });
 const domainEventPublisher = new DomainEventPublisher({ messageProducer });
 
-
+const getById = async (id: number): Promise<Customer|null> => {
+  return await Customer.findOne({ where: { id: id }});
+}
 
 const createCreditCard = async (ssn: CustomerAttributes['ssn'], creditCardType: CustomerCreditCardAttributes['type']) : Promise<Number> => {
   let customer = await Customer.findOne({ where: { ssn: ssn } });
@@ -43,5 +45,6 @@ const createCreditCard = async (ssn: CustomerAttributes['ssn'], creditCardType: 
 
 
 export default {
-  createCreditCard
+  createCreditCard,
+  getById
 }

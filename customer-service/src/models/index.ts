@@ -1,11 +1,14 @@
 import Customer from './Customer';
 import CustomerCreditCard from './CustomerCreditCard';
+import CustomerBonusPoints from './CustomerBonusPoints';
 export {
   Customer,
-  CustomerCreditCard
+  CustomerCreditCard,
+  CustomerBonusPoints
 };
 
 export default {
   Customer,
-  CustomerCreditCard
+  CustomerCreditCard,
+  CustomerBonusPoints
 };

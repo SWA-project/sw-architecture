@@ -1,7 +1,7 @@
 const { DomainEventPublisher, DefaultChannelMapping, MessageProducer } = require('eventuate-tram-core-nodejs');
 
-import { CustomerAttributes } from './../types/models';
-import { ApplicationCreatedEvent, BankEntityTypeName } from '../eventuate-tram/eventConfig';
+import { CustomerAttributes } from '../types/models';
+import { OrderCreatedEvent, BankEntityTypeName } from '../eventuate-tram/eventConfig';
 
 
 
@@ -11,18 +11,20 @@ const domainEventPublisher = new DomainEventPublisher({ messageProducer });
 
 
 
-const create = async (ssn: CustomerAttributes['ssn']) : Promise<Number> => {
+const create = async (customerId: number, creditAmount: number, orderId: number) : Promise<Number> => {
   
   const randomId = Math.floor(Math.random() * 10000);
   const application = {
     id: randomId,
-    ssn
+    customerId,
+    creditAmount,
+    orderId
   }
 
   await domainEventPublisher.publish(
     BankEntityTypeName, 
     application.id, 
-    [{ _type: ApplicationCreatedEvent, ...application}],
+    [{ _type: OrderCreatedEvent, ...application}],
   );
 
   return application.id

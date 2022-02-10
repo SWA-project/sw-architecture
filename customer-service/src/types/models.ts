@@ -24,3 +24,12 @@ export interface CustomerCreditCardAttributes extends CreatedAtUpdatedAt {
   customerId: number
   type: CreditCardType
 }
+
+export interface CustomerBonusPointsAttributes extends CreatedAtUpdatedAt {
+  id: number,
+  customerId: number
+  orderId: number
+  points: number
+}
+
+export type CustomerBonusPointsCreationAttributes = Optional<CustomerBonusPointsAttributes, 'id' | 'createdAt' | 'updatedAt'>;

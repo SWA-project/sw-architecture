@@ -2,7 +2,7 @@
 import { Customer } from '../models';
 import express from 'express';
 import customerService from '../services/customer';
-import applicationService from '../services/application';
+import orderService from '../services/order';
 
 const customerRouter = express.Router();
 
@@ -28,10 +28,10 @@ customerRouter.post('/cards', async (req, res) => {
   }
 })
 
-customerRouter.post('/application', async (req, res) => {
+customerRouter.post('/order', async (req, res) => {
   try {
-    const { ssn } = req.body;
-    const applicationId = await applicationService.create(ssn);
+    const { customerId, creditAmount, orderId } = req.body;
+    const applicationId = await orderService.create(customerId, creditAmount, orderId);
     res.status(200).json({ id: applicationId })
   } catch (e) {
     console.log(e)
