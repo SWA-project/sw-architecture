@@ -1,13 +1,14 @@
 package swa.creditservice.web;
 
-public class CreateVerdictRequest {
+public class CreateLoanRequest {
   private Long customerId;
   private int creditAmount;
+  private int customerMoney;
 
-  public CreateVerdictRequest() {
+  public CreateLoanRequest() {
   }
 
-  public CreateVerdictRequest(Long customerId, int creditAmount) {
+  public CreateLoanRequest(Long customerId, int customerMoney, int creditAmount) {
     this.customerId = customerId;
     this.creditAmount = creditAmount;
   }
@@ -18,5 +19,9 @@ public class CreateVerdictRequest {
 
   public int getCreditAmount() {
     return creditAmount;
+  }
+
+  public int getCustomerMoney() {
+    return customerMoney;
   }
 }

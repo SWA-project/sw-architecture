@@ -1,0 +1,12 @@
+version: "3.9"
+    
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlpw
+      MYSQL_USER: mysqlcredit
+      MYSQL_PASSWORD: mysqlpw
+    ports:
+      - '8086:3306'

@@ -6,11 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import swa.creditservice.domain.CreditRepository;
-import swa.creditservice.domain.Verdict;
+import swa.creditservice.domain.Loan;
 import swa.creditservice.service.CreditCalculationService;
-import swa.creditservice.web.CreateVerdictRequest;
-import swa.creditservice.web.CreateVerdictResponse;
-import swa.creditservice.web.VerdictResponse;
+import swa.creditservice.web.CreateLoanRequest;
+import swa.creditservice.web.CreateLoanResponse;
+import swa.creditservice.web.LoanResponse;
 
 @RestController
 public class CreditController {
@@ -24,18 +24,18 @@ public class CreditController {
     }
 
     @RequestMapping(value = "/calculateCredit", method = RequestMethod.POST)
-    public CreateVerdictResponse createVerdict(@RequestBody CreateVerdictRequest createVerdictRequest) {
-      boolean verdictCalculation = creditService.calculateVerdict(createVerdictRequest.getCustomerId(), createVerdictRequest.getCreditAmount());
-      Verdict verdict = creditService.createVerdict(createVerdictRequest.getCustomerId(), createVerdictRequest.getCreditAmount(), verdictCalculation);
-      return new CreateVerdictResponse(verdict.getId());
+    public CreateLoanResponse createVerdict(@RequestBody CreateLoanRequest createLoanRequest) {
+      boolean loanCalculation = creditService.reserveCredit(createLoanRequest.getCustomerId(), createLoanRequest.getCustomerMoney(), createLoanRequest.getCreditAmount());
+      Loan verdict = creditService.createVerdict(createLoanRequest.getCustomerId(), createLoanRequest.getCreditAmount(), loanCalculation);
+      return new CreateLoanResponse(verdict.getId());
     }
 
   
-    @RequestMapping(value="/creditVerdict/{verdictId}", method= RequestMethod.GET)
-    public ResponseEntity<VerdictResponse> getCustomer(@PathVariable Long verdictId) {
+    @RequestMapping(value="/loans/{loanId}", method= RequestMethod.GET)
+    public ResponseEntity<LoanResponse> getCustomer(@PathVariable Long loanId) {
       return creditRepository
-              .findById(verdictId)
-              .map(c -> new ResponseEntity<>(new VerdictResponse(c.getCustomerId(), c.getCreditAmount(), c.getVerdict()), HttpStatus.OK))
+              .findById(loanId)
+              .map(c -> new ResponseEntity<>(new LoanResponse(c.getCustomerId(), c.getCreditAmount(), c.getValid()), HttpStatus.OK))
               .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

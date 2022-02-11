@@ -1,17 +1,17 @@
 package swa.creditservice.web;
 
-public class VerdictResponse {
+public class LoanResponse {
   private Long customerId;
   private int creditAmount;
-  private boolean verdict;
+  private boolean valid;
 
-  public VerdictResponse() {
+  public LoanResponse() {
   }
 
-  public VerdictResponse(Long customerId, int creditAmount, boolean verdict) {
+  public LoanResponse(Long customerId, int creditAmount, boolean valid) {
     this.customerId = customerId;
     this.creditAmount = creditAmount;
-    this.verdict = verdict;
+    this.valid = valid;
   }
 
   public Long getCustomerId() {
@@ -30,11 +30,11 @@ public class VerdictResponse {
     this.creditAmount = creditAmount;
   }
 
-  public boolean getVerdict() {
-    return verdict;
+  public boolean getValid() {
+    return valid;
   }
 
-  public void setCreditLimit(boolean verdict) {
-    this.verdict = verdict;
+  public void setCreditLimit(boolean valid) {
+    this.valid = valid;
   }
 }

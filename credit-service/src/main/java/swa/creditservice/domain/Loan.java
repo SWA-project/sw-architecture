@@ -3,35 +3,35 @@ package swa.creditservice.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Verdict")
+@Table(name="Loan")
 @Access(AccessType.FIELD)
-public class Verdict {
+public class Loan {
     
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Long customerId; 
   private int creditAmount;
-  private boolean verdict;
+  private boolean valid;
 
   @Version
   private Long version;
 
-  public Verdict() {
+  public Loan() {
   }
 
-  public Verdict(Long customerId, int creditAmount, boolean verdict) {
+  public Loan(Long customerId, int creditAmount, boolean valid) {
     this.customerId = customerId;
     this.creditAmount = creditAmount;
-    this.verdict = verdict;
+    this.valid = valid;
   }
 
   public Long getCustomerId() {
       return customerId;
   }
 
-  public boolean getVerdict() {
-    return verdict;
+  public boolean getValid() {
+    return valid;
 }
 
   public Long getId() {
