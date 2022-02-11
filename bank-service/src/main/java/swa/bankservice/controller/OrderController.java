@@ -13,34 +13,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import swa.bankservice.http.OrderRequest;
-import swa.bankservice.http.OrderResponse;
-import swa.bankservice.model.CreditCardOrder;
+import swa.bankservice.model.Order;
 import swa.bankservice.model.OrderDetails;
-import swa.bankservice.repository.CreditCardOrderRepository;
-import swa.bankservice.service.CreditCardOrderService;
+import swa.bankservice.repository.OrderRepository;
+import swa.bankservice.service.OrderSagaService;
 
 @RestController
-public class Controller {
+public class OrderController {
 
-  private CreditCardOrderRepository orderRepository;
-  
-  @Autowired
-  private CreditCardOrderService orderService;
+  private OrderRepository orderRepository;
+  private OrderSagaService orderSagaService;
 
   @Autowired
-  public Controller(CreditCardOrderRepository orderRepository) {
+  public OrderController(OrderSagaService orderSagaService, OrderRepository orderRepository) {
+    this.orderSagaService = orderSagaService;
     this.orderRepository = orderRepository;
   }
 
   @RequestMapping(value = "/orders", method = RequestMethod.POST)
-  public CreditCardOrder createOrder(@RequestBody OrderRequest request) {
-	OrderDetails orderDetails = new OrderDetails(request.getCustomerId(), request.getCreditAmount());
-	CreditCardOrder order = this.orderService.createOrder(orderDetails);
+  public Order createOrder(@RequestBody OrderRequest request) {
+	Order order = orderSagaService.createOrder(new OrderDetails(request.getCustomerId(), request.getCreditAmount()));
 	return order;
   }
   
   @RequestMapping(value="/orders/{orderId}", method = RequestMethod.GET)
-  public ResponseEntity<CreditCardOrder> getOrder(@PathVariable Long orderId) {
+  public ResponseEntity<Order> getOrder(@PathVariable Long orderId) {
     return orderRepository
             .findById(orderId)
             .map(o -> new ResponseEntity<>(o, HttpStatus.OK))
@@ -49,8 +46,8 @@ public class Controller {
 
   
   @RequestMapping(value="/orders/customer/{customerId}", method = RequestMethod.GET)
-  public ResponseEntity<List<CreditCardOrder>> getOrdersByCustomerId(@PathVariable Long customerId) {
-    return new ResponseEntity<List<CreditCardOrder>>(orderRepository
+  public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable Long customerId) {
+    return new ResponseEntity<List<Order>>(orderRepository
             .findAllByOrderDetailsCustomerId(customerId)
             .stream()
             .collect(Collectors.toList()), HttpStatus.OK);

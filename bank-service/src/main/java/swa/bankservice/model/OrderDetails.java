@@ -27,7 +27,7 @@ public class OrderDetails {
 		return customerId;
 	}
 	
-	public int getOrderTotal() {
+	public int getCreditAmount() {
 		return creditAmount;
 	}
 

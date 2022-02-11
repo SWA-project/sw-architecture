@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="card_orders")
 @Access(AccessType.FIELD)
-public class CreditCardOrder {
+public class Order {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +23,16 @@ public class CreditCardOrder {
   @Version
   private Long version;
 
-  public CreditCardOrder() {
+  public Order() {
   }
 
-  public CreditCardOrder(OrderDetails orderDetails) {
+  public Order(OrderDetails orderDetails) {
     this.orderDetails = orderDetails;
     this.state = OrderState.PENDING;
   }
 
-  public static CreditCardOrder createOrder(OrderDetails orderDetails) {
-    return new CreditCardOrder(orderDetails);
+  public static Order createOrder(OrderDetails orderDetails) {
+    return new Order(orderDetails);
   }
 
   public Long getId() {
