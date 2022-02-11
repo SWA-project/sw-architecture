@@ -2,9 +2,15 @@
 
 # Running the services
 
-## Bank & Credit services
+## Bank services
 
-Go to the root of chosen service f.ex `/bank-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary.
+Go to `/bank-service` and start up the mysql database container first by running `docker-compose -f mysql-db.yml up`. 
+
+When the database is up and running, run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary.
+
+## Credit service
+
+Go to `/credit-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary.
 
 ### Endpoints 
 
