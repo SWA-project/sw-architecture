@@ -33,6 +33,7 @@ services:
       - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_USER=mysqluser
       - MYSQL_PASSWORD=mysqlpw
+  
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     restart: always
@@ -41,8 +42,33 @@ services:
       PMA_USER: root
       PMA_PASSWORD: rootpassword
     ports:
-      - "8080:80"
+      - "8097:80"
 
+  postgres-db:
+      image: postgres
+      ports:
+        - 5432:5432
+      restart: always
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+      environment:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: customer-db
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      GUNICORN_ACCESS_LOGFILE: /dev/null
+    ports:
+      - "8098:80"
 
   cdc-service:
     image: eventuateio/eventuate-cdc-service:0.6.0.RC1
@@ -66,3 +92,4 @@ services:
       EVENTUATELOCAL_CDC_MYSQL_BINLOG_CLIENT_UNIQUE_ID: 1234567890
       EVENTUATELOCAL_CDC_READ_OLD_DEBEZIUM_DB_OFFSET_STORAGE_TOPIC: "false"
       EVENTUATE_CDC_KAFKA_ENABLE_BATCH_PROCESSING: "false"
+
