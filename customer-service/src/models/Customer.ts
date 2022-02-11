@@ -1,12 +1,11 @@
-
 import { Model, Table, Column, DataType, HasMany } from 'sequelize-typescript';
 
 import { CustomerCreationAttributes, CustomerAttributes } from '../types/models';
-
-import { CustomerBonusPoints, CustomerCreditCard } from './';
+import { CustomerBonusPoints } from '.';
 
 @Table
 class Customer extends Model<CustomerAttributes, CustomerCreationAttributes> {
+  
   @Column({ 
     primaryKey: true, 
     autoIncrement: true,
@@ -29,8 +28,6 @@ class Customer extends Model<CustomerAttributes, CustomerCreationAttributes> {
   })
   ssn!: string;
 
-  @HasMany(() => CustomerCreditCard)
-  creditCards?: CustomerCreditCard[];
 
   @HasMany(() => CustomerBonusPoints)
   bonusPoints?: CustomerBonusPoints[];

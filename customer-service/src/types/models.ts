@@ -1,8 +1,8 @@
 import { Optional } from 'sequelize';
 
 interface CreatedAtUpdatedAt {
-  createdAt: Date
-  updatedAt: Date
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface CustomerAttributes extends CreatedAtUpdatedAt {
@@ -14,22 +14,12 @@ export interface CustomerAttributes extends CreatedAtUpdatedAt {
 
 export type CustomerCreationAttributes = Optional<CustomerAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
-export enum CreditCardType {
-  VISA = 'visa',
-  MASTER = 'master'
-}
-
-export interface CustomerCreditCardAttributes extends CreatedAtUpdatedAt {
-  id: number,
-  customerId: number
-  type: CreditCardType
-}
-
 export interface CustomerBonusPointsAttributes extends CreatedAtUpdatedAt {
   id: number,
   customerId: number
   orderId: number
   points: number
+  
 }
 
-export type CustomerBonusPointsCreationAttributes = Optional<CustomerBonusPointsAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+export interface CustomerBonusPointsCreationAttributes extends Optional<CustomerBonusPointsAttributes, 'id' | 'createdAt' | 'updatedAt'> {};

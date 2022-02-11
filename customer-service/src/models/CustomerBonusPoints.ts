@@ -5,7 +5,7 @@ import Customer from './Customer';
 
 
 @Table
-class CustomerBonusPoints extends Model<CustomerBonusPointsAttributes, CustomerBonusPointsCreationAttributes> {
+class CustomerBonusPoints extends Model<CustomerBonusPointsAttributes, CustomerBonusPointsCreationAttributes> implements CustomerBonusPointsAttributes {
   
   @Column({ 
     primaryKey: true, 
