@@ -13,9 +13,7 @@ import swa.bankservice.service.OrderService;
 import swa.bankservice.service.OrderSagaService;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {
-	    "swa.bankservice.repository"
-})
+@EnableJpaRepositories(basePackages = {"swa.bankservice.repository"})
 @EnableAutoConfiguration
 @Import(OptimisticLockingDecoratorConfiguration.class)
 public class BankConfiguration {

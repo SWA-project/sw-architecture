@@ -10,7 +10,7 @@ import swa.bankservice.config.OrderWebConfiguration;
 
 @SpringBootApplication
 @Configuration
-@Import({OrderWebConfiguration.class, BankConfiguration.class})
+@Import({BankConfiguration.class, OrderWebConfiguration.class})
 public class BankServiceApplication {
 
 	public static void main(String[] args) {

@@ -10,5 +10,18 @@ services:
       MYSQL_PASSWORD: mysqlpw
     ports:
       - '8084:3306'
-    
+    cap_add:
+      - SYS_NICE 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8085:80
 

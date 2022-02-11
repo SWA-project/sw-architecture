@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="card_orders")
-@Access(AccessType.FIELD)
 public class Order {
 
   @Id
