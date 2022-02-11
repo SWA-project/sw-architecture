@@ -25,10 +25,10 @@ services:
       KAFKA_HEAP_OPTS: -Xmx192m
 
   mysql:
-    image: eventuateio/eventuate-mysql:0.8.0.RELEASE
+    image: eventuateio/eventuate-tram-sagas-mysql:0.18.0.RELEASE
     restart: always
     ports:
-      - 1433:1433
+      - 1433:3306
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_USER=mysqluser
@@ -71,7 +71,7 @@ services:
       - "8098:80"
 
   cdc-service:
-    image: eventuateio/eventuate-cdc-service:0.6.0.RC1
+    image: eventuateio/eventuate-cdc-service:0.12.0.RELEASE
     ports:
       - "8099:8080"
     depends_on:
@@ -92,4 +92,5 @@ services:
       EVENTUATELOCAL_CDC_MYSQL_BINLOG_CLIENT_UNIQUE_ID: 1234567890
       EVENTUATELOCAL_CDC_READ_OLD_DEBEZIUM_DB_OFFSET_STORAGE_TOPIC: "false"
       EVENTUATE_CDC_KAFKA_ENABLE_BATCH_PROCESSING: "false"
-
+      EVENTUATE_OUTBOX_ID: 1
+      JAVA_OPTS: -Xmx64m
