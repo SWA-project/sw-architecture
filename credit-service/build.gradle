@@ -31,13 +31,14 @@ dependencies {
 	// implementation 'io.eventuate.common:eventuate-common-spring-jdbc:0.14.0.RELEASE'
 	// implementation 'io.eventuate.tram.sagas:eventuate-tram-sagas-spring-orchestration:0.18.0.RELEASE'
 
+	implementation 'io.eventuate.tram.sagas:eventuate-tram-sagas-spring-participant:0.18.0.RELEASE'
+
 	// runtimeOnly 'com.h2database:h2'
 	
 	implementation 'io.eventuate.util:eventuate-util-spring-swagger:0.13.0.RELEASE'
 	
 	implementation 'io.eventuate.tram.core:eventuate-tram-spring-optimistic-locking:0.25.0.RELEASE'
 	implementation 'io.eventuate.tram.core:eventuate-tram-spring-jdbc-kafka:0.29.0.RELEASE'
-	implementation 'io.eventuate.tram.sagas:eventuate-tram-sagas-spring-orchestration-simple-dsl-starter:0.18.0.RELEASE'
 	
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.2.6.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.2.6.RELEASE'

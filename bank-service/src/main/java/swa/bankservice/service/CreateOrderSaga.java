@@ -8,6 +8,7 @@ import io.eventuate.tram.sagas.simpledsl.SimpleSaga;
 import swa.bankservice.dto.CreateOrderSagaData;
 import swa.bankservice.dto.CustomerCreditLimitExceeded;
 import swa.bankservice.dto.CustomerNotFound;
+import swa.bankservice.dto.LoanNotGranted;
 import swa.bankservice.dto.ValidateUserCommand;
 import swa.bankservice.model.Order;
 import swa.bankservice.model.RejectionReason;
@@ -26,8 +27,7 @@ public class CreateOrderSaga implements SimpleSaga<CreateOrderSagaData> {
             .withCompensation(this::reject)
           .step()
             .invokeParticipant(this::reserveCredit)
-            .onReply(CustomerNotFound.class, this::handleCustomerNotFound)
-            .onReply(CustomerCreditLimitExceeded.class, this::handleCustomerCreditLimitExceeded)
+            .onReply(LoanNotGranted.class, this::handleLoanNotGranted)
           .step()
             .invokeLocal(this::approve)
           .build();
@@ -36,7 +36,7 @@ public class CreateOrderSaga implements SimpleSaga<CreateOrderSagaData> {
     data.setRejectionReason(RejectionReason.UNKNOWN_CUSTOMER);
   }
 
-  private void handleCustomerCreditLimitExceeded(CreateOrderSagaData data, CustomerCreditLimitExceeded reply) {
+  private void handleLoanNotGranted(CreateOrderSagaData data, LoanNotGranted reply) {
     data.setRejectionReason(RejectionReason.INSUFFICIENT_CREDIT);
   }
 
@@ -51,11 +51,12 @@ public class CreateOrderSaga implements SimpleSaga<CreateOrderSagaData> {
   }
 
   private CommandWithDestination reserveCredit(CreateOrderSagaData data) {
-    long orderId = data.getOrderId();
+    Long orderId = data.getOrderId();
     Long customerId = data.getOrderDetails().getCustomerId();
     int creditAmount = data.getOrderDetails().getCreditAmount();
-    return send(new ValidateUserCommand(customerId, orderId, creditAmount))
-            .to("customerService")
+    int customerMoney = data.getOrderDetails().getCustomerMoney();
+    return send(new ValidateUserCommand(customerId, orderId, creditAmount, customerMoney))
+            .to("creditService")
             .build();
   }
 

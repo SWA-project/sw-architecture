@@ -25,8 +25,8 @@ public class CreditController {
 
     @RequestMapping(value = "/calculateCredit", method = RequestMethod.POST)
     public CreateLoanResponse createVerdict(@RequestBody CreateLoanRequest createLoanRequest) {
-      boolean loanCalculation = creditService.reserveCredit(createLoanRequest.getCustomerId(), createLoanRequest.getCustomerMoney(), createLoanRequest.getCreditAmount());
-      Loan verdict = creditService.createVerdict(createLoanRequest.getCustomerId(), createLoanRequest.getCreditAmount(), loanCalculation);
+      creditService.reserveCredit(createLoanRequest.getCustomerId(), createLoanRequest.getCustomerMoney(), createLoanRequest.getCreditAmount());
+      Loan verdict = creditService.createVerdict(createLoanRequest.getCustomerId(), createLoanRequest.getCreditAmount(), true);
       return new CreateLoanResponse(verdict.getId());
     }
 

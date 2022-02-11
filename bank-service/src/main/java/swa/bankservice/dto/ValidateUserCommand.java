@@ -16,7 +16,10 @@ public class ValidateUserCommand implements Command {
     this.creditAmount = creditAmount;
   }
 
-  public int getCreditAmount() {
+  public ValidateUserCommand(Long customerId, long orderId, int creditAmount2, int customerMoney) {
+}
+
+public int getCreditAmount() {
 	return creditAmount;
   }
 

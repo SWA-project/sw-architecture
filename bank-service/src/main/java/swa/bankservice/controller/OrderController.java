@@ -32,7 +32,7 @@ public class OrderController {
 
   @RequestMapping(value = "/orders", method = RequestMethod.POST)
   public Order createOrder(@RequestBody OrderRequest request) {
-	Order order = orderSagaService.createOrder(new OrderDetails(request.getCustomerId(), request.getCreditAmount()));
+	Order order = orderSagaService.createOrder(new OrderDetails(request.getCustomerId(), request.getCreditAmount(), request.getCustomerMoney()));
 	return order;
   }
   
