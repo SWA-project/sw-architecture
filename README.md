@@ -24,9 +24,9 @@ Go to `/order-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` 
 
 Go to `/credit` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
 
-### Endpoints 
+## Endpoints 
 
-## Using the services
+### Order Service
 
 **Create a new credit order**:
 
@@ -46,7 +46,7 @@ Note, if there is no customerId 1 in the credit service database table yet, the 
 Send a *GET* request to `http://localhost:8080/orders`, and you should get a list of all orders.
 
 
-## REVISE: Credit servic
+### REVISE: Credit servic
 
 ** Add customer data**:
 
