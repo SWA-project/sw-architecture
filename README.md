@@ -1,4 +1,4 @@
-# sw-architecture
+# Credit Banking Saga Pattern
 
 # Running the services
 
@@ -14,6 +14,7 @@ Next, head to kafka manager at `http://localhost:9000` and
 - Under Cluster Zookeeper Hosts enter `zoo:2181`
 - Add topics:
   - orders
+  - verdicts
   - transactions
 
 ## Run the Order service
