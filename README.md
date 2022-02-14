@@ -2,7 +2,11 @@
 
 # Running the services
 
-Before running the services, startup the mysql *database* and *kafka* containers. Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. Currently, both order service and credit service use the same db.
+Before running the services, startup the mysql *database* and *kafka* containers. 
+
+Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. 
+
+Currently, both order service and credit service use the same db.
 
 ## Run the Order service
 
