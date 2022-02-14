@@ -6,7 +6,7 @@ Before running the services, startup the mysql *database* and *kafka* containers
 
 Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. 
 
-Currently, both order service and credit service use the same db.
+Currently, both order service and credit service use the same db, which you can access via phpmyadmin at `http://localhost:8085`.
 
 ## Run the Order service
 
@@ -20,7 +20,7 @@ Go to `/credit` and run `./gradlew bootRun` or `./gradlew clean bootRun` if nece
 
 ## Using the services
 
-*Create a new credit order*:
+**Create a new credit order**:
 
 Send a *POST* request to `localhost:9192/orders` with the body 
 
@@ -33,7 +33,7 @@ Send a *POST* request to `localhost:9192/orders` with the body
 
 Note, if there is no customerId 1 in the credit service database table yet, the credit request will be rejected.
 
-*Get all orders*:
+**Get all orders**:
 
 Send a *GET* request to `http://localhost:8080/orders`, and you should get a list of all orders.
 
