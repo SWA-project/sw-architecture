@@ -1,6 +1,0 @@
-package payment.saga.order.enums;
-
-public enum TransactionStatus {
-    SUCCESSFUL,
-    FAILED
-}
