@@ -1,5 +1,4 @@
 {
-  "excludedFiles": ["*.js"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -23,7 +22,8 @@
       { "argsIgnorePattern": "^_" }
     ],
     "no-case-declarations": "off",
-    "quotes": [2, "single"]
+    "quotes": [2, "single"],
+    "excludedFiles": ["*.js"]
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
