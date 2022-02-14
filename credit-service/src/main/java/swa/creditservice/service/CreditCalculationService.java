@@ -22,9 +22,10 @@ public class CreditCalculationService {
         return creditRepository.save(newVerdict);
     }
 
-    public void reserveCredit(Long customerId, int customerMoney, int creditAmount) {
+    public Loan reserveCredit(Long customerId, int customerMoney, int creditAmount) {
         Iterator<Loan> it = creditRepository.findAll().iterator();
         int totalLoans = 0;
+        boolean valid = true;
         while (it.hasNext()) {
             Loan loan = it.next();
             if (loan.getValid() && loan.getCustomerId().compareTo(customerId) == 0) {
@@ -33,7 +34,8 @@ public class CreditCalculationService {
         }
         
         if ((customerMoney-totalLoans)/2 < creditAmount) {
-            throw new LoanNotGrantedException();
+            valid = false;
         }
+        return new Loan(customerId, creditAmount, valid);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import swa.creditservice.domain.CreditRepository;
 import swa.creditservice.domain.Loan;
+import swa.creditservice.messagebroker.CreditProducer;
 import swa.creditservice.service.CreditCalculationService;
 import swa.creditservice.web.CreateLoanRequest;
 import swa.creditservice.web.CreateLoanResponse;
@@ -16,17 +17,25 @@ import swa.creditservice.web.LoanResponse;
 public class CreditController {
     private CreditCalculationService creditService;
     private CreditRepository creditRepository;
+    private CreditProducer producer;
   
     @Autowired
-    public CreditController(CreditCalculationService creditService, CreditRepository creditRepository) {
+    public CreditController(CreditCalculationService creditService, CreditRepository creditRepository, CreditProducer producer) {
       this.creditRepository = creditRepository;
       this.creditService = creditService;
+      this.producer = producer;
     }
 
     @RequestMapping(value = "/calculateCredit", method = RequestMethod.POST)
     public CreateLoanResponse createVerdict(@RequestBody CreateLoanRequest createLoanRequest) {
-      creditService.reserveCredit(createLoanRequest.getCustomerId(), createLoanRequest.getCustomerMoney(), createLoanRequest.getCreditAmount());
-      Loan verdict = creditService.createVerdict(createLoanRequest.getCustomerId(), createLoanRequest.getCreditAmount(), true);
+      Loan verdict = creditService.reserveCredit(createLoanRequest.getCustomerId(), createLoanRequest.getCustomerMoney(), createLoanRequest.getCreditAmount());
+      creditService.createVerdict(verdict.getCustomerId(), verdict.getCreditAmount(), verdict.getValid());
+      if (verdict.getValid()) {
+        this.producer.sendMessage("GRANTED");
+      } else {
+        this.producer.sendMessage("REJECTED");
+      }
+      
       return new CreateLoanResponse(verdict.getId());
     }
 
