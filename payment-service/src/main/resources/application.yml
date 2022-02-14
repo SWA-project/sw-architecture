@@ -1,0 +1,28 @@
+server:
+  port: 9191
+
+spring:
+  cloud:
+    stream:
+      function:
+        definition: orderPurchaseEventProcessor;paymentEventSubscriber
+      bindings:
+        orderPurchaseEventProcessor-in-0:
+          destination: orders
+        orderPurchaseEventProcessor-out-0:
+          destination: payments
+        paymentEventSubscriber-in-0:
+          destination: payments
+        paymentEventSubscriber-out-0:
+          destination: transactions
+  datasource:
+    url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/credit_db?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: mysqlpw
+    maximum-pool-size: 100
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    generate-ddl: true
