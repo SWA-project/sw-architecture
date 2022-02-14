@@ -3,7 +3,7 @@ package swa.credit.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import swa.credit.model.Credit;
+import swa.credit.model.Customer;
 import swa.credit.model.CreditOrderEvent;
 import swa.credit.model.CreditVerdictEvent;
 import swa.credit.repository.CustomerRepository;
@@ -36,7 +36,7 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
         return creditVerdictEvent;
     }
 
-    private void deductUserBalance(int creditAmount, CreditVerdictEvent creditVerdictEvent, Credit customer) {
+    private void deductUserBalance(int creditAmount, CreditVerdictEvent creditVerdictEvent, Customer customer) {
         double userBalance = customer.getBalance();
         if (userBalance >= creditAmount) {
             customer.setBalance(userBalance - creditAmount);

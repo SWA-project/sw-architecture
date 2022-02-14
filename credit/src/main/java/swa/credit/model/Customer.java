@@ -13,16 +13,15 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "credits")
-public class Credit {
+@Table(name = "customers")
+public class Customer {
 
     @Id
     @GeneratedValue
     private Integer id;
-    private Integer customerId;
     private double balance;
 
-    public Credit() {
+    public Customer() {
     }
 
     public Integer getId() {
@@ -31,14 +30,6 @@ public class Credit {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
     }
 
     public double getBalance() {
