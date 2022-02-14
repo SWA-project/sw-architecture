@@ -8,6 +8,14 @@ Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`.
 
 Currently, both order service and credit service use the same db, which you can access via phpmyadmin at `http://localhost:8085`.
 
+Next, head to kafka manager at `http://localhost:9000` and 
+
+- create a cluster Click 'Add Cluster' with any name.
+- Under Cluster Zookeeper Hosts enter `zoo:2181`
+- Add topics:
+  - orders
+  - transactions
+
 ## Run the Order service
 
 Go to `/order-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
@@ -38,9 +46,19 @@ Note, if there is no customerId 1 in the credit service database table yet, the 
 Send a *GET* request to `http://localhost:8080/orders`, and you should get a list of all orders.
 
 
-## REVISE: Credit service
+## REVISE: Credit servic
 
-*Calculate a new verdict for applied credit*: 
+** Add customer data**:
+
+Send Send a *POST* request to `localhost:8080/customers with the body 
+
+```
+{
+  "balance": 1000
+}
+```
+
+**Calculate a new verdict for applied credit**: 
 
 Send a *POST* request to `localhost:8080/calculateCredit with the body 
 
