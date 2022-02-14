@@ -26,7 +26,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("orders/create")
+    @PostMapping("orders")
     public Mono<CreditOrder> createOrder(@RequestBody OrderRequest order) {
         return orderService.createOrder(order);
     }
