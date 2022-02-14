@@ -5,15 +5,15 @@ spring:
   cloud:
     stream:
       function:
-        definition: orderPurchaseEventProcessor;paymentEventSubscriber
+        definition: creditOrderEventProcessor;verdictEventSubscriber
       bindings:
-        orderPurchaseEventProcessor-in-0:
+        creditOrderEventProcessor-in-0:
           destination: orders
-        orderPurchaseEventProcessor-out-0:
-          destination: payments
-        paymentEventSubscriber-in-0:
-          destination: payments
-        paymentEventSubscriber-out-0:
+        creditOrderEventProcessor-out-0:
+          destination: verdicts
+        verdictEventSubscriber-in-0:
+          destination: verdicts
+        verdictEventSubscriber-out-0:
           destination: transactions
   datasource:
     url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/credit_db?createDatabaseIfNotExist=true

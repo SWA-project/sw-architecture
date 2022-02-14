@@ -31,7 +31,7 @@ public class OrderServiceConfig {
     }
 
     @Bean
-    public Supplier<Flux<CreditOrderEvent>> orderPurchaseEventPublisher(
+    public Supplier<Flux<CreditOrderEvent>> creditOrderEventPublisher(
             Sinks.Many<CreditOrderEvent> publisher) {
         return publisher::asFlux;
     }
