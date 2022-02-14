@@ -2,44 +2,43 @@
 
 # Running the services
 
-## Bank services
+Before running the services, startup the mysql *database* and *kafka* containers. 
 
-Go to `/bank-service` and start up the mysql database container first by running `docker-compose -f mysql-db.yml up`. 
+Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. 
 
-When the database is up and running, run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary.
+Currently, both order service and credit service use the same db, which you can access via phpmyadmin at `http://localhost:8085`.
+
+## Run the Order service
+
+Go to `/order-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
 
 ## Credit service
 
-Go to `/credit-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary.
+Go to `/credit` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
 
 ### Endpoints 
 
-## Bank service
+## Using the services
 
-*Create a new credit card order*: 
+**Create a new credit order**:
 
-Send a *POST* request to `localhost:8080/orders with the body 
-
-```
-{
-  "customerId": 2,
-  "creditAmount": 4000
-}
-```
-
-*Get an order by id*:
-
-Send a *GET* request to `http://localhost:8080/orders/{orderId}`, and you should get a response such as:
+Send a *POST* request to `localhost:9192/orders` with the body 
 
 ```
 {
-    "orderId": 1,
-    "orderState": "PENDING",
-    "rejectionReason": null
+  "customerId": 1,
+  "creditAmount": 50
 }
 ```
 
-## Credit service
+Note, if there is no customerId 1 in the credit service database table yet, the credit request will be rejected.
+
+**Get all orders**:
+
+Send a *GET* request to `http://localhost:8080/orders`, and you should get a list of all orders.
+
+
+## REVISE: Credit service
 
 *Calculate a new verdict for applied credit*: 
 
