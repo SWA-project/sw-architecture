@@ -5,6 +5,14 @@
 
 ### Customer-service
 
+Make sure kafka is running
+
+Set environment:
+
+```
+export DOCKER_HOST_IP=<LOCAL_MACHINE_IP>
+```
+
 Run:
 
 ```

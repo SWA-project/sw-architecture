@@ -17,13 +17,13 @@
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
     ],
     "no-case-declarations": "off",
-    "quotes": [2, "single"],
-    "excludedFiles": ["*.js"]
+    "quotes": [2, "single"]
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
