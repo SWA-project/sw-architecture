@@ -11,15 +11,14 @@ const kafkaConfig = {
 
 const subscribeTopics = ['order-customer'];
 
-
 const connect = async () => {
   const kafka = new Kafka(kafkaConfig);
 
   const producer = KafkaProducer.getInstance();
   await producer.connect();
   console.log('Producer connected');
-  
-  const consumer = kafka.consumer({ groupId: 'customer-group'});
+
+  const consumer = kafka.consumer({ groupId: 'customer-group' });
 
   await consumer.connect();
   for (const topic of subscribeTopics) {
@@ -29,13 +28,10 @@ const connect = async () => {
   await consumer.run({
     eachMessage: async (messagePayLoad: EachMessagePayload) => {
       await eachMessageHandler(messagePayLoad);
-    },
+    }
   });
 };
 
-
-
 export default {
-  connect,
-  
+  connect
 };

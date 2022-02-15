@@ -1,4 +1,4 @@
-import { Kafka, Producer} from 'kafkajs';
+import { Kafka, Producer } from 'kafkajs';
 import config from '../utils/config';
 const { KAFKA_CLIENT_ID, KAFKA_BROKERS } = config;
 

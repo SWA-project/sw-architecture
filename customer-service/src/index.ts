@@ -21,12 +21,10 @@ app.use(healthRouter);
 app.use('/customers', customerRouter);
 
 const startServer = async () => {
-
   await connectToDatabase();
   try {
     await kafka.connect();
   } catch (e) {
-    
     console.log('error on connecting to kafka');
     console.log(e);
     console.log('exiting...');
@@ -35,8 +33,6 @@ const startServer = async () => {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-
-  
 };
 
 void startServer();

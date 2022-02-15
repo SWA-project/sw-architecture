@@ -5,7 +5,6 @@ import express from 'express';
 const customerRouter = express.Router();
 
 customerRouter.get('/', async (_, res) => {
-
   try {
     const customers = await Customer.findAll();
 
@@ -14,6 +13,5 @@ customerRouter.get('/', async (_, res) => {
     res.status(500).json([]);
   }
 });
-
 
 export default customerRouter;

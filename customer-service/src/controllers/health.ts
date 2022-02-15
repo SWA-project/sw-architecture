@@ -6,7 +6,6 @@ import { Response } from 'express';
 const healthRouter = express.Router();
 
 healthRouter.get('/health', (_req, res) => {
-  
   res.json('healthy');
 });
 

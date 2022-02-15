@@ -2,8 +2,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { DATABASE_URL } from './config';
 import { Customer, CustomerBonusPoints } from '../models';
 const sequelize = new Sequelize(DATABASE_URL, {
-  dialectOptions: {
-  },
+  dialectOptions: {},
   models: [Customer, CustomerBonusPoints]
 });
 
@@ -14,9 +13,9 @@ const connectToDatabase = async () => {
     console.log('connected to the database');
     await Customer.create({
       id: 1,
-      firstName: "Ossi",
+      firstName: 'Ossi',
       ssn: '010101-1111'
-    })
+    });
   } catch (err) {
     console.log('failed to connect to the database');
     console.log(err);
@@ -26,7 +25,4 @@ const connectToDatabase = async () => {
   return null;
 };
 
-export {
-  connectToDatabase,
-  sequelize
-};
+export { connectToDatabase, sequelize };
