@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import swa.credit.model.CreditVerdictEvent;
+import swa.credit.dto.CreditVerdictEvent;
+import swa.credit.dto.TransactionEvent;
 import swa.credit.model.Transaction;
-import swa.credit.model.TransactionEvent;
 import swa.credit.repository.TransactionRepository;
 
 import static swa.credit.enums.TransactionStatus.FAILED;

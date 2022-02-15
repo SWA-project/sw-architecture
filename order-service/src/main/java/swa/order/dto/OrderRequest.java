@@ -1,4 +1,4 @@
-package swa.order.model;
+package swa.order.dto;
 
 import lombok.Data;
 

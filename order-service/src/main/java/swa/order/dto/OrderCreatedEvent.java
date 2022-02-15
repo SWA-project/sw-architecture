@@ -1,9 +1,9 @@
-package swa.order.model;
+package swa.order.dto;
 
 import lombok.Data;
 
 @Data
-public class CreditOrderEvent implements Event {
+public class OrderCreatedEvent implements Event {
 
     private static final String EVENT = "CreditRequest";
 
@@ -11,17 +11,17 @@ public class CreditOrderEvent implements Event {
     private Integer customerId;
     private int creditAmount;
 
-    public CreditOrderEvent setOrderId(Integer orderId) {
+    public OrderCreatedEvent setOrderId(Integer orderId) {
         this.orderId = orderId;
         return this;
     }
 
-    public CreditOrderEvent setCustomerId(Integer userId) {
+    public OrderCreatedEvent setCustomerId(Integer userId) {
         this.customerId = userId;
         return this;
     }
 
-    public CreditOrderEvent setCreditAmount(int creditAmount) {
+    public OrderCreatedEvent setCreditAmount(int creditAmount) {
 		this.creditAmount = creditAmount;
 		return this;
 	}

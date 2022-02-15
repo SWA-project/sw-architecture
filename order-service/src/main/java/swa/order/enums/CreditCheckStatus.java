@@ -1,6 +1,6 @@
 package swa.order.enums;
 
-public enum TransactionStatus {
+public enum CreditCheckStatus {
     SUCCESSFUL,
     FAILED
 }

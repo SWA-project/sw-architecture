@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import swa.credit.model.Customer;
-import swa.credit.repository.CustomerRepository;
+import swa.credit.repository.CreditOrderRepository;
 
 @RestController
 public class CustomerController {
 	
-	private CustomerRepository customerRepository;
+	private CreditOrderRepository customerRepository;
 	
 	@Autowired
-	public CustomerController(CustomerRepository customerRepository) {
+	public CustomerController(CreditOrderRepository customerRepository) {
 		this.customerRepository = customerRepository;
 	}
 	

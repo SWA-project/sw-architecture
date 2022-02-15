@@ -4,21 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Sinks;
+import swa.order.dto.OrderCreatedEvent;
 import swa.order.model.CreditOrder;
-import swa.order.model.CreditOrderEvent;
 
 @Component
 public class CreditOrderPublisher {
 
-    private final Sinks.Many<CreditOrderEvent> sink;
+    private final Sinks.Many<OrderCreatedEvent> sink;
 
     @Autowired
-    public CreditOrderPublisher(Sinks.Many<CreditOrderEvent> sink) {
+    public CreditOrderPublisher(Sinks.Many<OrderCreatedEvent> sink) {
         this.sink = sink;
     }
 
     public void process(CreditOrder order) {
-        CreditOrderEvent creditOrderEvent = new CreditOrderEvent()
+        OrderCreatedEvent creditOrderEvent = new OrderCreatedEvent()
                 .setCustomerId(order.getCustomerId())
                 .setOrderId(order.getId())
                 .setCreditAmount(order.getCreditAmount());

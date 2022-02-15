@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import swa.credit.dto.CreditOrderEvent;
+import swa.credit.dto.CreditVerdictEvent;
+import swa.credit.dto.TransactionEvent;
 import swa.credit.handler.EventHandler;
-import swa.credit.model.CreditOrderEvent;
-import swa.credit.model.CreditVerdictEvent;
-import swa.credit.model.TransactionEvent;
 
 import java.util.function.Function;
 

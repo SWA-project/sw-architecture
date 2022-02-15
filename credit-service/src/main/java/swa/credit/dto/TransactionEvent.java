@@ -1,4 +1,4 @@
-package swa.credit.model;
+package swa.credit.dto;
 
 import lombok.Getter;
 import lombok.ToString;

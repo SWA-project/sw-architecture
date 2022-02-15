@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import swa.credit.model.Customer;
-import swa.credit.model.CreditOrderEvent;
-import swa.credit.model.CreditVerdictEvent;
-import swa.credit.repository.CustomerRepository;
+import swa.credit.dto.CreditOrderEvent;
+import swa.credit.dto.CreditVerdictEvent;
+import swa.credit.repository.CreditOrderRepository;
 
 import static swa.credit.enums.VerdictStatus.APPROVED;
 import static swa.credit.enums.VerdictStatus.DECLINED;
@@ -16,10 +16,10 @@ import javax.transaction.Transactional;
 @Component
 public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, CreditVerdictEvent> {
 
-    private final CustomerRepository customerRepository;
+    private final CreditOrderRepository customerRepository;
 
     @Autowired
-    public CreditOrderEventHandler(CustomerRepository customerRepository) {
+    public CreditOrderEventHandler(CreditOrderRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
