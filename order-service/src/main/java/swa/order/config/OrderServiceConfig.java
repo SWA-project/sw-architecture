@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
+import swa.order.dto.OrderCreatedEvent;
+import swa.order.dto.CreditCheckEvent;
 import swa.order.handler.EventConsumer;
-import swa.order.model.CreditOrderEvent;
-import swa.order.model.TransactionEvent;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -16,28 +16,28 @@ import java.util.function.Supplier;
 @Configuration
 public class OrderServiceConfig {
 
-    private final EventConsumer<TransactionEvent> transactionEventConsumer;
+    private final EventConsumer<CreditCheckEvent> transactionEventConsumer;
 
     @Autowired
-    public OrderServiceConfig(EventConsumer<TransactionEvent> transactionEventConsumer) {
+    public OrderServiceConfig(EventConsumer<CreditCheckEvent> transactionEventConsumer) {
         this.transactionEventConsumer = transactionEventConsumer;
     }
 
     @Bean
-    public Sinks.Many<CreditOrderEvent> sink() {
+    public Sinks.Many<OrderCreatedEvent> sink() {
         return Sinks.many()
                 .multicast()
                 .directBestEffort();
     }
 
     @Bean
-    public Supplier<Flux<CreditOrderEvent>> creditOrderEventPublisher(
-            Sinks.Many<CreditOrderEvent> publisher) {
+    public Supplier<Flux<OrderCreatedEvent>> orderCreditEventPublisher(
+            Sinks.Many<OrderCreatedEvent> publisher) {
         return publisher::asFlux;
     }
 
     @Bean
-    public Consumer<TransactionEvent> transactionEventProcessor() {
+    public Consumer<CreditCheckEvent> transactionEventProcessor() {
         return transactionEventConsumer::consumeEvent;
     }
 

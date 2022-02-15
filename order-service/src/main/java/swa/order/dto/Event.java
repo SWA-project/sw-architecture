@@ -1,6 +1,5 @@
-package swa.order.model;
+package swa.order.dto;
 
 public interface Event {
-
     String getEvent();
 }

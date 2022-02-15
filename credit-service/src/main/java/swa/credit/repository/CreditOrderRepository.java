@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import swa.credit.model.Customer;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+public interface CreditOrderRepository extends JpaRepository<Customer, Integer> {
 }

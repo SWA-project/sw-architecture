@@ -1,31 +1,31 @@
-package swa.order.model;
+package swa.order.dto;
 
 import lombok.Getter;
 import lombok.ToString;
-import swa.order.enums.TransactionStatus;
+import swa.order.enums.CustomerStatus;
 
 @ToString
 @Getter
-public class TransactionEvent implements Event {
+public class CustomerCheckEvent implements Event {
 
-    private static final String EVENT = "Transaction";
+    private static final String EVENT = "CustomerCheck";
 
     private Integer orderId;
-    private TransactionStatus status;
+    private CustomerStatus status;
 
-    public TransactionEvent() {
+    public CustomerCheckEvent() {
     }
 
-    public TransactionEvent orderId(Integer orderId) {
+    public CustomerCheckEvent orderId(Integer orderId) {
         this.orderId = orderId;
         return this;
     }
 
-    public TransactionEvent status(TransactionStatus status) {
+    public CustomerCheckEvent status(CustomerStatus status) {
         this.status = status;
         return this;
     }
-    
+
     public Integer getOrderId() {
 		return orderId;
 	}
@@ -34,11 +34,11 @@ public class TransactionEvent implements Event {
 		this.orderId = orderId;
 	}
 
-	public TransactionStatus getStatus() {
+	public CustomerStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(TransactionStatus status) {
+	public void setStatus(CustomerStatus status) {
 		this.status = status;
 	}
 
