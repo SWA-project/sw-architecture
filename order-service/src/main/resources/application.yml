@@ -5,10 +5,14 @@ spring:
   cloud:
     stream:
       function:
-        definition: orderCreditEventPublisher;transactionEventProcessor;
+        definition: orderCreditEventPublisher;customerCheckEventProcessor;transactionEventProcessor;
       bindings:
         orderCreditEventPublisher-out-0:
           destination: order-customer
+        customerCheckEventProcessor-in-0:
+          destination: customer-order
+        customerCheckEventProcessor-out-0:
+          destination: order-credit
         transactionEventProcessor-in-0:
           destination: credit-order
   datasource:
