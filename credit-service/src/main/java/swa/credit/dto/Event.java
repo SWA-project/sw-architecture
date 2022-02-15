@@ -1,4 +1,4 @@
-package swa.credit.model;
+package swa.credit.dto;
 
 public interface Event {
 

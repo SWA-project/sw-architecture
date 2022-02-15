@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import swa.credit.model.Customer;
-import swa.credit.model.CreditOrderEvent;
-import swa.credit.model.CreditVerdictEvent;
+import swa.credit.dto.CreditOrderEvent;
+import swa.credit.dto.CreditVerdictEvent;
 import swa.credit.repository.CreditOrderRepository;
 
 import static swa.credit.enums.VerdictStatus.APPROVED;
