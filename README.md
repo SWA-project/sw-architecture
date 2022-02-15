@@ -25,6 +25,10 @@ Go to `/order-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` 
 
 Go to `/credit` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
 
+## Customer service
+
+Go to `/customer-service` and see the instructions in the README.md .
+
 ## Endpoints 
 
 ### Order Service
