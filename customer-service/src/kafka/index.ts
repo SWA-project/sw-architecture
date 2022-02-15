@@ -9,7 +9,7 @@ const kafkaConfig = {
   brokers: KAFKA_BROKERS
 };
 
-const subscribeTopics = ['orders'];
+const subscribeTopics = ['order-customer'];
 
 
 const connect = async () => {
