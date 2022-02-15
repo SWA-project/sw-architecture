@@ -1,4 +1,4 @@
-package swa.order.consumer;
+package swa.order.handler;
 
 import swa.order.model.Event;
 

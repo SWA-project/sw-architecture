@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-import swa.order.consumer.EventConsumer;
+import swa.order.handler.EventConsumer;
 import swa.order.model.CreditOrderEvent;
 import swa.order.model.TransactionEvent;
 

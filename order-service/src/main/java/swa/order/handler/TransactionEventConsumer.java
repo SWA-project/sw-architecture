@@ -1,4 +1,4 @@
-package swa.order.consumer;
+package swa.order.handler;
 
 import static swa.order.enums.OrderStatus.APPROVED;
 import static swa.order.enums.OrderStatus.DECLINED;
