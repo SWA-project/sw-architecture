@@ -13,9 +13,11 @@ Next, head to kafka manager at `http://localhost:9000` and
 - create a cluster Click 'Add Cluster' with any name.
 - Under Cluster Zookeeper Hosts enter `zoo:2181`
 - Add topics:
-  - orders
+  - order-customer
+  - customer-order
+  - order-credit
+  - credit-order
   - verdicts
-  - transactions
 
 ## Run the Order service
 
