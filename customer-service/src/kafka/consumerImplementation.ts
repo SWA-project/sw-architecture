@@ -1,6 +1,6 @@
 import { KafkaProducer } from './KafkaProducer';
 import { EachMessageHandler, EachMessagePayload } from 'kafkajs';
-import {} from './';
+
 import customerService from '../services/customer';
 import bonusPointsService from '../services/bonusPoints';
 
@@ -28,7 +28,7 @@ const sendCustomerFoundEvent = async (value : CustomerFoundEventResponseMessageV
     value: JSON.stringify(value),
     partition: 0,
   };
-  console.log({ value });
+
   await producer.send({
     topic: responseTopic,
     messages: [ finalMessage ]
