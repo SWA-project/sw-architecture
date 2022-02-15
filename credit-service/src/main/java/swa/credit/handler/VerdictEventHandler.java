@@ -17,13 +17,13 @@ import static swa.credit.enums.VerdictStatus.APPROVED;
 import javax.transaction.Transactional;
 
 @Component
-public class CreditEventHandler implements EventHandler<CreditVerdictEvent, TransactionEvent> {
+public class VerdictEventHandler implements EventHandler<CreditVerdictEvent, TransactionEvent> {
 
     private final TransactionRepository transactionRepository;
     private final Scheduler jdbcScheduler;
 
     @Autowired
-    public CreditEventHandler(
+    public VerdictEventHandler(
             TransactionRepository transactionRepository,
             Scheduler jdbcScheduler) {
         this.transactionRepository = transactionRepository;
