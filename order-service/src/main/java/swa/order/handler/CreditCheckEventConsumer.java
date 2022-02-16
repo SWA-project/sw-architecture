@@ -35,6 +35,10 @@ public class CreditCheckEventConsumer implements EventConsumer<CreditCheckEvent>
 
     public void consumeEvent(CreditCheckEvent event) {
     	System.out.println("Handling credit service response for order " + event.getOrderId() + ". Response status: " + event.getStatus());
+    	if (event.getOrderId() == null) {
+    		System.out.println("Not proceeding with an event without a valid order id");
+    		return;
+    	}
         Mono.fromRunnable(
                 () -> creditOrderRepository.findById(event.getOrderId())
                         .ifPresent(order -> {
