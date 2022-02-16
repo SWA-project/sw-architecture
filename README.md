@@ -17,6 +17,7 @@ Next, head to kafka manager at `http://localhost:9000` and
   - customer-order
   - order-credit
   - credit-order
+  - order-rollback
   - verdicts
 
 ## Run the Order service
