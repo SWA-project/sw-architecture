@@ -1,33 +1,40 @@
 package swa.order.handler;
 
+import static swa.order.enums.CustomerStatus.CUSTOMERNOTFOUND;
+import static swa.order.enums.OrderStatus.FAILED;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import swa.order.dto.OrderCreatedEvent;
+import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import swa.order.dto.CustomerCheckEvent;
+import swa.order.dto.OrderCreatedEvent;
 import swa.order.model.CreditOrder;
 import swa.order.repository.CreditOrderRepository;
-
-import static swa.order.enums.CustomerStatus.CUSTOMERNOTFOUND;
 
 @Component
 public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEvent, OrderCreatedEvent> {
 
     private final CreditOrderRepository creditOrderRepository;
+    private final Scheduler jdbcScheduler;
 
     @Autowired
-    public CustomerCheckEventHandler(CreditOrderRepository creditOrderRepository) {
+    public CustomerCheckEventHandler(CreditOrderRepository creditOrderRepository, Scheduler jdbcScheduler) {
         this.creditOrderRepository = creditOrderRepository;
+        this.jdbcScheduler = jdbcScheduler;
     }
 
     @Transactional
     public OrderCreatedEvent handleEvent(CustomerCheckEvent event) {
     	System.out.println("Handling response from customer service, response: " + event.getStatus());
-    	OrderCreatedEvent orderEvent = new OrderCreatedEvent();
+    	OrderCreatedEvent orderEvent = new OrderCreatedEvent().setOrderId(event.getOrderId());
     	
     	if (event.getStatus().equals(CUSTOMERNOTFOUND)) {
+    		this.updateOrderStatusOnFail(event);
     		return orderEvent;
     	}
     	
@@ -35,7 +42,6 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
 			CreditOrder creditOrder = this.getCreditOrder(event.getOrderId());
 			System.out.println("Requesting credit service to check customer id " + creditOrder.getCustomerId() + " and credit amount of " + creditOrder.getCreditAmount());
 			orderEvent
-        		.setOrderId(creditOrder.getId())
         		.setCustomerId(creditOrder.getCustomerId())
         		.setCreditAmount(creditOrder.getCreditAmount());
 		} catch (Exception e) {
@@ -46,6 +52,19 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
 		
 		return orderEvent;
     }
+    
+    private void updateOrderStatusOnFail(CustomerCheckEvent event) {
+    	System.out.println("Customer was not found, setting order state to FAILED");
+    	Mono.fromRunnable(
+                () -> creditOrderRepository.findById(event.getOrderId())
+                        .ifPresent(order -> {
+                            order.setStatus(FAILED);
+                            creditOrderRepository.save(order);
+                        }))
+                .subscribeOn(jdbcScheduler)
+                .subscribe();
+    }
+   
     
     private CreditOrder getCreditOrder(Integer orderId) throws Exception {
     	return this.creditOrderRepository
