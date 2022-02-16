@@ -30,7 +30,7 @@ Go to `/credit` and run `./gradlew bootRun` or `./gradlew clean bootRun` if nece
 
 ## Customer service
 
-Go to `/customer-service` and see the instructions in the README.md .
+Go to `/customer-service` and see the instructions in the README.md.
 
 ## Endpoints 
 
@@ -47,46 +47,46 @@ Send a *POST* request to `localhost:9192/orders` with the body
 }
 ```
 
-Note, if there is no customerId 1 in the credit service database table yet, the credit request will be rejected.
+And you will get a response with order state set to `PENDING`:
+
+```
+{
+    "id": 1,
+    "customerId": 1,
+    "status": "PENDING",
+    "creditAmount": 50
+}
+```
+
+Note that if there is no customer with id 1 in the credit service database, the credit request will be rejected.
+
+To check the order data after the saga has finished, send a *GET* request to `http://localhost:9192/orders/1`. For a successfully completed order the response would be 
+
+```
+{
+    "id": 1,
+    "customerId": 1,
+    "status": "COMPLETED",
+    "creditAmount": 50
+}
+```
+
 
 **Get all orders**:
 
-Send a *GET* request to `http://localhost:8080/orders`, and you should get a list of all orders.
+Send a *GET* request to `http://localhost:9191/orders`, and you get a list of all orders.
 
 
-### REVISE: Credit servic
+### Credit service
 
-** Add customer data**:
+**Add customer data**:
 
-Send Send a *POST* request to `localhost:8080/customers with the body 
+Send Send a *POST* request to `localhost:9191/customers with the body 
 
 ```
 {
+  "customerId": 1,
   "balance": 1000
 }
 ```
-
-**Calculate a new verdict for applied credit**: 
-
-Send a *POST* request to `localhost:8080/calculateCredit with the body 
-
-```
-{
-  "customerId": 1234,
-  "creditAmount": 43000
-}
-```
-
-The service will response the verdict id, that can be used as below:
-
-*Get the verdict with verdictId*:
-
-Send a *GET* request to `http://localhost:8080/creditVerdict/{verdictId}`, and you should get a response such as:
-
-```
-{
-    "customerId": 1234,
-    "creditAmount": 43000,
-    "verdict": true
-}
-```
+`
