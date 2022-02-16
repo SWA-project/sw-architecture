@@ -24,7 +24,7 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
 
     @Transactional
     public OrderCreatedEvent handleEvent(CustomerCheckEvent event) {
-                
+    	System.out.println("Handling response from customer service, response: " + event.getStatus());
     	OrderCreatedEvent orderEvent = new OrderCreatedEvent();
     	
     	if (event.getStatus().equals(CUSTOMERNOTFOUND)) {
@@ -33,6 +33,7 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
     	
 		try {
 			CreditOrder creditOrder = this.getCreditOrder(event.getOrderId());
+			System.out.println("Requesting credit service to check customer id " + creditOrder.getCustomerId() + " and credit amount of " + creditOrder.getCreditAmount());
 			orderEvent
         		.setOrderId(creditOrder.getId())
         		.setCustomerId(creditOrder.getCustomerId())
@@ -41,6 +42,7 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
+		
 		
 		return orderEvent;
     }

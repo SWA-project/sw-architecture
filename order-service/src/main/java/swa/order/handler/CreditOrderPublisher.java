@@ -17,7 +17,8 @@ public class CreditOrderPublisher {
         this.sink = sink;
     }
 
-    public void process(CreditOrder order) {
+    public void publish(CreditOrder order) {
+    	System.out.println("Publishing order " + order.getId() + " with creditAmount " + order.getCreditAmount());
         OrderCreatedEvent creditOrderEvent = new OrderCreatedEvent()
                 .setCustomerId(order.getCustomerId())
                 .setOrderId(order.getId())

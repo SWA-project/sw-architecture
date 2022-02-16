@@ -39,7 +39,7 @@ public class OrderService {
     public Mono<CreditOrder> createOrder(OrderRequest order) {
         CreditOrder creditOrder = getCreditOrder(order);
         CreditOrder savedCreditOrder = creditOrderRepository.save(creditOrder);
-        creditOrderPublisher.process(creditOrder);
+        creditOrderPublisher.publish(creditOrder);
         return Mono.just(savedCreditOrder);
     }
 
