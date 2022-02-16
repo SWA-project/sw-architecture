@@ -5,9 +5,9 @@ spring:
   cloud:
     stream:
       function:
-        definition: orderCreditEventPublisher;customerCheckEventProcessor;transactionEventProcessor;
+        definition: orderCreatedEventPublisher;customerCheckEventProcessor;transactionEventProcessor;orderRollbackEventPublisher;
       bindings:
-        orderCreditEventPublisher-out-0:
+        orderCreatedEventPublisher-out-0:
           destination: order-customer
         customerCheckEventProcessor-in-0:
           destination: customer-order
@@ -15,6 +15,8 @@ spring:
           destination: order-credit
         transactionEventProcessor-in-0:
           destination: credit-order
+        orderRollbackEventPublisher-out-0:
+          destination: order-rollback
   datasource:
     url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/order_db?createDatabaseIfNotExist=true
     driverClassName: com.mysql.jdbc.Driver

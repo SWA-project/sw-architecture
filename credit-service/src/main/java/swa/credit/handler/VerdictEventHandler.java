@@ -6,18 +6,17 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import swa.credit.dto.CreditVerdictEvent;
-import swa.credit.dto.TransactionEvent;
+import swa.credit.dto.CreditVerdictDoneEvent;
 import swa.credit.model.Transaction;
 import swa.credit.repository.TransactionRepository;
 
-import static swa.credit.enums.TransactionStatus.FAILED;
-import static swa.credit.enums.TransactionStatus.SUCCESSFUL;
 import static swa.credit.enums.VerdictStatus.APPROVED;
+import static swa.credit.enums.VerdictStatus.DECLINED;
 
 import javax.transaction.Transactional;
 
 @Component
-public class VerdictEventHandler implements EventHandler<CreditVerdictEvent, TransactionEvent> {
+public class VerdictEventHandler implements EventHandler<CreditVerdictEvent, CreditVerdictDoneEvent> {
 
     private final TransactionRepository transactionRepository;
     private final Scheduler jdbcScheduler;
@@ -31,18 +30,19 @@ public class VerdictEventHandler implements EventHandler<CreditVerdictEvent, Tra
     }
 
     @Transactional
-    public TransactionEvent handleEvent(CreditVerdictEvent event) {
+    public CreditVerdictDoneEvent handleEvent(CreditVerdictEvent event) {
+    	System.out.println("Returning credit verdict to order service for order " + event.getOrderId() + " and status " + event.getStatus());
         Mono.fromRunnable(() -> transactionRepository.save(
                 new Transaction()
                         .setOrderId(event.getOrderId())))
                 .subscribeOn(jdbcScheduler)
                 .subscribe();
 
-        return new TransactionEvent()
+        return new CreditVerdictDoneEvent()
                 .orderId(event.getOrderId())
                 .status(APPROVED.equals(event.getStatus())
-                        ? SUCCESSFUL
-                        : FAILED);
+                        ? APPROVED
+                        : DECLINED);
 
     }
 }

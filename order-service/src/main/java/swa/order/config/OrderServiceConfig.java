@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-
 import swa.order.dto.CreditCheckEvent;
 import swa.order.dto.CustomerCheckEvent;
 import swa.order.dto.OrderCreatedEvent;
+import swa.order.dto.RollbackEvent;
 import swa.order.handler.EventConsumer;
 import swa.order.handler.EventHandler;
 
@@ -39,10 +39,23 @@ public class OrderServiceConfig {
                 .multicast()
                 .directBestEffort();
     }
+    
+    @Bean
+    public Sinks.Many<RollbackEvent> rollbackSink() {
+        return Sinks.many()
+                .multicast()
+                .directBestEffort();
+    }
   
     @Bean
-    public Supplier<Flux<OrderCreatedEvent>> orderCreditEventPublisher(
+    public Supplier<Flux<OrderCreatedEvent>> orderCreatedEventPublisher(
             Sinks.Many<OrderCreatedEvent> publisher) {
+        return publisher::asFlux;
+    }
+    
+    @Bean
+    public Supplier<Flux<RollbackEvent>> orderRollbackEventPublisher(
+            Sinks.Many<RollbackEvent> publisher) {
         return publisher::asFlux;
     }
     

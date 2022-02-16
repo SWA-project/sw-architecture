@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import swa.credit.dto.CreditOrderEvent;
 import swa.credit.dto.CreditVerdictEvent;
-import swa.credit.dto.TransactionEvent;
+import swa.credit.dto.CreditVerdictDoneEvent;
 import swa.credit.handler.EventHandler;
 
 import java.util.function.Function;
@@ -14,12 +14,12 @@ import java.util.function.Function;
 @Configuration
 public class CreditServiceConfig {
 
-    private final EventHandler<CreditVerdictEvent, TransactionEvent> verdictEventHandler;
+    private final EventHandler<CreditVerdictEvent, CreditVerdictDoneEvent> verdictEventHandler;
     private final EventHandler<CreditOrderEvent, CreditVerdictEvent> creditOrderEventHandler;
 
     @Autowired
     public CreditServiceConfig(
-            EventHandler<CreditVerdictEvent, TransactionEvent> verdictEventHandler,
+            EventHandler<CreditVerdictEvent, CreditVerdictDoneEvent> verdictEventHandler,
             EventHandler<CreditOrderEvent, CreditVerdictEvent> creditOrderEventHandler) {
         this.verdictEventHandler = verdictEventHandler;
         this.creditOrderEventHandler = creditOrderEventHandler;
@@ -31,7 +31,7 @@ public class CreditServiceConfig {
     }
 
     @Bean
-    public Function<CreditVerdictEvent, TransactionEvent> verdictEventSubscriber() {
+    public Function<CreditVerdictEvent, CreditVerdictDoneEvent> verdictEventSubscriber() {
         return verdictEventHandler::handleEvent;
     }
 

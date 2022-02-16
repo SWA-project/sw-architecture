@@ -77,7 +77,10 @@ const orderCustomerTopicHandler = async (payload: EachMessagePayload) => {
 
 const eachMessageHandler: EachMessageHandler = async (payload) => {
   const { topic } = payload;
-  console.log(`Message with topic "${topic}" received`);
+  console.log(
+    `Message with topic "${topic}" received, with payload ${payload.message.value.toString()}`
+  );
+
   switch (topic) {
     case 'order-customer':
       return await orderCustomerTopicHandler(payload);

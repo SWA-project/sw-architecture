@@ -25,6 +25,7 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
 
     @Transactional
     public CreditVerdictEvent handleEvent(CreditOrderEvent event) {
+    	System.out.println("Handling credit check request from order service with order id: " + event.getOrderId() + ", customer id: " + event.getCustomerId() + " and credit amount: " + event.getCreditAmount());
         Integer customerId = event.getCustomerId();
         int creditAmount = event.getCreditAmount();
         CreditVerdictEvent creditVerdictEvent = new CreditVerdictEvent()
