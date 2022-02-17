@@ -1,4 +1,4 @@
-# Credit Banking Saga Pattern
+# Microservices Orchestrator Saga Pattern - Credit Banking example
 
 # Running the services
 
