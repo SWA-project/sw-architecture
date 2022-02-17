@@ -5,15 +5,11 @@ spring:
   cloud:
     stream:
       function:
-        definition: creditOrderEventProcessor;verdictEventSubscriber
+        definition: creditOrderEventProcessor
       bindings:
         creditOrderEventProcessor-in-0:
           destination: order-credit
         creditOrderEventProcessor-out-0:
-          destination: verdicts
-        verdictEventSubscriber-in-0:
-          destination: verdicts
-        verdictEventSubscriber-out-0:
           destination: credit-order
   datasource:
     url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/credit_db?createDatabaseIfNotExist=true

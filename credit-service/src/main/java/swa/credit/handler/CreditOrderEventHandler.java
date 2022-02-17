@@ -3,9 +3,6 @@ package swa.credit.handler;
 import static swa.credit.enums.VerdictStatus.APPROVED;
 import static swa.credit.enums.VerdictStatus.DECLINED;
 
-import java.util.Objects;
-import java.util.stream.Stream;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +38,7 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
         customerRepository
                 .findById(customerId)
                 .ifPresent(customer -> deductUserBalance(creditAmount, creditVerdictEvent, customer));
+        System.out.println("Returning credit verdict to order service for order " + creditVerdictEvent.getOrderId() + " and status " + creditVerdictEvent.getStatus());
         return creditVerdictEvent;
     }
 
