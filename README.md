@@ -18,7 +18,6 @@ Next, head to kafka manager at `http://localhost:9000` and
   - order-credit
   - credit-order
   - order-rollback
-  - verdicts
 
 ## Run the Order service
 
@@ -54,11 +53,10 @@ And you will get a response with order state set to `PENDING`:
     "id": 1,
     "customerId": 1,
     "status": "PENDING",
-    "creditAmount": 50
+    "creditAmount": 50,
+    "rejectionReason": null
 }
 ```
-
-Note that if there is no customer with id 1 in the credit service database, the credit request will be rejected.
 
 To check the order data after the saga has finished, send a *GET* request to `http://localhost:9192/orders/1`. For a successfully completed order the response would be 
 
@@ -67,10 +65,23 @@ To check the order data after the saga has finished, send a *GET* request to `ht
     "id": 1,
     "customerId": 1,
     "status": "COMPLETED",
-    "creditAmount": 50
+    "creditAmount": 50,
+    "rejectionReason": null
 }
 ```
 
+Note that if there is no customer with id 1 in the credit service database, the credit request will be rejected:
+
+
+```
+{
+    "id": 1,
+    "customerId": 1,
+    "status": "FAILED",
+    "creditAmount": 50,
+    "rejectionReason": "Customer not found"
+}
+```
 
 **Get all orders**:
 
@@ -81,7 +92,7 @@ Send a *GET* request to `http://localhost:9191/orders`, and you get a list of al
 
 **Add customer data**:
 
-Send Send a *POST* request to `localhost:9191/customers with the body 
+Send Send a *POST* request to `localhost:9191/customers` with the body 
 
 ```
 {
@@ -89,4 +100,17 @@ Send Send a *POST* request to `localhost:9191/customers with the body
   "balance": 1000
 }
 ```
-`
+Response:
+
+```
+{
+    "customerId": 1,
+    "balance": 1000.0,
+    "totalCredits": 0
+}
+```
+The field totalCredits is the sum of all existing approved credit requests.
+
+**Get all customer data**
+
+Sending a *GET* request to `http://localhost:9191/customers` will return data of all customers in credit service.
