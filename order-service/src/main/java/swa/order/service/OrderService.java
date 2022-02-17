@@ -1,18 +1,12 @@
 package swa.order.service;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.util.function.Tuple2;
 import swa.order.dto.OrderRequest;
 import swa.order.enums.OrderStatus;
 import swa.order.handler.CreditOrderPublisher;
@@ -24,45 +18,30 @@ public class OrderService {
 
     private final CreditOrderRepository creditOrderRepository;
     private final CreditOrderPublisher creditOrderPublisher;
-    private final Scheduler jdbcScheduler;
 
     @Autowired
     public OrderService(
             CreditOrderRepository creditOrderRepository,
-            CreditOrderPublisher creditOrderPublisher,
-            Scheduler jdbcScheduler) {
+            CreditOrderPublisher creditOrderPublisher) {
         this.creditOrderRepository = creditOrderRepository;
         this.creditOrderPublisher = creditOrderPublisher;
-        this.jdbcScheduler = jdbcScheduler;
     }
 
-    public Mono<CreditOrder> createOrder(OrderRequest order) {
+    public CreditOrder createOrder(OrderRequest order) {
         CreditOrder creditOrder = getCreditOrder(order);
         CreditOrder savedCreditOrder = creditOrderRepository.save(creditOrder);
         creditOrderPublisher.publish(creditOrder);
-        return Mono.just(savedCreditOrder);
+        return savedCreditOrder;
     }
 
-    public Flux<CreditOrder> getAll() {
-        return Flux.defer(
-                () -> Flux.fromIterable(creditOrderRepository.findAll()))
-                .subscribeOn(jdbcScheduler);
+    public List<CreditOrder> getAll() {
+        return creditOrderRepository.findAll();
     }
 
-    public Flux<List<CreditOrder>> reactiveGetAll() {
-        Flux<Long> interval = Flux.interval(Duration.ofMillis(2000));
-        Flux<List<CreditOrder>> orderPurchaseFlux = Flux.fromStream(
-                Stream.generate(creditOrderRepository::findAll));
-        return Flux.zip(interval, orderPurchaseFlux)
-                .map(Tuple2::getT2);
-    }
-
-    public Mono<CreditOrder> getOrderById(Integer id) {
-        return Mono.fromCallable(
-                () -> creditOrderRepository.findById(id)
-                        .orElseThrow(() -> new ResponseStatusException(
-                                HttpStatus.NOT_FOUND, "Order id: " + id + " does not exist")))
-                .subscribeOn(jdbcScheduler);
+    public CreditOrder getOrderById(Integer id) {
+        return creditOrderRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Order id: " + id + " does not exist"));
     }
 
     private CreditOrder getCreditOrder(final OrderRequest order) {
