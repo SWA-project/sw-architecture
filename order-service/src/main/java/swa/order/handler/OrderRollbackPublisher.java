@@ -18,8 +18,7 @@ public class OrderRollbackPublisher {
     }
 
     public void publish(CreditOrder order) {
-        RollbackEvent rollbackEvent = new RollbackEvent()
-                .setOrderId(order.getId());
+        RollbackEvent rollbackEvent = new RollbackEvent().setOrderId(order.getId());
         rollbackSink.emitNext(rollbackEvent, Sinks.EmitFailureHandler.FAIL_FAST);
     }
 }

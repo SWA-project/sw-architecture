@@ -20,16 +20,13 @@ public class CreditCheckEventConsumer implements EventConsumer<CreditCheckEvent>
 
     private final CreditOrderRepository creditOrderRepository;
     private final OrderRollbackPublisher rollbackPublisher;
-    private final Scheduler jdbcScheduler;
 
     @Lazy
     @Autowired
     public CreditCheckEventConsumer(
             CreditOrderRepository creditOrderRepository,
-            OrderRollbackPublisher rollbackPublisher,
-            Scheduler jdbcScheduler) {
+            OrderRollbackPublisher rollbackPublisher) {
         this.creditOrderRepository = creditOrderRepository;
-        this.jdbcScheduler = jdbcScheduler;
         this.rollbackPublisher = rollbackPublisher;
     }
 
@@ -42,15 +39,13 @@ public class CreditCheckEventConsumer implements EventConsumer<CreditCheckEvent>
     		System.out.println("Not proceeding with an event without a valid order id \n");
     		return;
     	}
-        Mono.fromRunnable(
-                () -> creditOrderRepository.findById(event.getOrderId())
-                        .ifPresent(order -> {
-                            setStatus(event, order);
-                            creditOrderRepository.save(order);
-                            initRollbackIfCheckFailed(order, event); 
-                        }))
-                .subscribeOn(jdbcScheduler)
-                .subscribe();
+    	
+    	creditOrderRepository.findById(event.getOrderId())
+        .ifPresent(order -> {
+            setStatus(event, order);
+            creditOrderRepository.save(order);
+            initRollbackIfCheckFailed(order, event); 
+        });
     }
 
     private void setStatus(CreditCheckEvent event, CreditOrder order) {

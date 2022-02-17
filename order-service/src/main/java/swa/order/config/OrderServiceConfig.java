@@ -46,7 +46,8 @@ public class OrderServiceConfig {
                 .multicast()
                 .directBestEffort();
     }
-  
+    
+    
     @Bean
     public Supplier<Flux<OrderCreatedEvent>> orderCreatedEventPublisher(
             Sinks.Many<OrderCreatedEvent> publisher) {

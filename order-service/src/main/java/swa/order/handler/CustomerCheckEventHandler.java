@@ -8,8 +8,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.core.Disposable;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import swa.order.dto.CustomerCheckEvent;
 import swa.order.dto.OrderCreatedEvent;
@@ -20,12 +18,10 @@ import swa.order.repository.CreditOrderRepository;
 public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEvent, OrderCreatedEvent> {
 
     private final CreditOrderRepository creditOrderRepository;
-    private final Scheduler jdbcScheduler;
 
     @Autowired
-    public CustomerCheckEventHandler(CreditOrderRepository creditOrderRepository, Scheduler jdbcScheduler) {
+    public CustomerCheckEventHandler(CreditOrderRepository creditOrderRepository) {
         this.creditOrderRepository = creditOrderRepository;
-        this.jdbcScheduler = jdbcScheduler;
     }
 
     @Transactional
@@ -55,14 +51,11 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
     
     private void updateOrderStatusOnFail(CustomerCheckEvent event) {
     	System.out.println("Customer was not found, setting order state to FAILED");
-    	Mono.fromRunnable(
-                () -> creditOrderRepository.findById(event.getOrderId())
-                        .ifPresent(order -> {
-                            order.setStatus(FAILED).setRejectionReason("Customer not found");
-                            creditOrderRepository.save(order);
-                        }))
-                .subscribeOn(jdbcScheduler)
-                .subscribe();
+    	creditOrderRepository.findById(event.getOrderId())
+        .ifPresent(order -> {
+            order.setStatus(FAILED).setRejectionReason("Customer not found");
+            creditOrderRepository.save(order);
+        });
     }
    
     
