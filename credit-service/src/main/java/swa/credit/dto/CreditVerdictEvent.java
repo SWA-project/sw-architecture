@@ -12,6 +12,7 @@ public class CreditVerdictEvent implements Event {
 
     private Integer orderId;
     private VerdictStatus status;
+    private String rejectionReason;
 
     public CreditVerdictEvent() {
     }
@@ -26,7 +27,16 @@ public class CreditVerdictEvent implements Event {
         return this;
     }
 
-    public Integer getOrderId() {
+    public CreditVerdictEvent setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
+		return this;
+	}
+
+    public String getRejectionReason() {
+		return rejectionReason;
+	}
+
+	public Integer getOrderId() {
 		return orderId;
 	}
 

@@ -2,6 +2,7 @@ package swa.order.model;
 
 import lombok.Data;
 import lombok.ToString;
+import swa.order.dto.CreditCheckEvent;
 import swa.order.enums.OrderStatus;
 
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ public class CreditOrder {
     private Integer customerId;
     private OrderStatus status;
     private int creditAmount;
+    private String rejectionReason;
 
     public CreditOrder setCustomerId(Integer customerId) {
         this.customerId = customerId;
@@ -36,6 +38,15 @@ public class CreditOrder {
     public CreditOrder setCreditAmount(int creditAmount) {
 		this.creditAmount = creditAmount;
 		return this;
+	}
+    
+    public CreditOrder setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
+		return this;
+	}
+
+    public String getRejectionReason() {
+		return rejectionReason;
 	}
     
 	public Integer getId() {

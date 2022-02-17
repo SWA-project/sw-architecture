@@ -40,7 +40,7 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
     	
 		try {
 			CreditOrder creditOrder = this.getCreditOrder(event.getOrderId());
-			System.out.println("Requesting credit service to check customer id " + creditOrder.getCustomerId() + " and credit amount of " + creditOrder.getCreditAmount());
+			System.out.println("Requesting credit service to check customer id " + creditOrder.getCustomerId() + " and credit amount of " + creditOrder.getCreditAmount() + "\n");
 			orderEvent
         		.setCustomerId(creditOrder.getCustomerId())
         		.setCreditAmount(creditOrder.getCreditAmount());
@@ -58,7 +58,7 @@ public class CustomerCheckEventHandler implements EventHandler<CustomerCheckEven
     	Mono.fromRunnable(
                 () -> creditOrderRepository.findById(event.getOrderId())
                         .ifPresent(order -> {
-                            order.setStatus(FAILED);
+                            order.setStatus(FAILED).setRejectionReason("Customer not found");
                             creditOrderRepository.save(order);
                         }))
                 .subscribeOn(jdbcScheduler)

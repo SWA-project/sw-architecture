@@ -18,7 +18,7 @@ public class CreditOrderPublisher {
     }
 
     public void publish(CreditOrder order) {
-    	System.out.println("Publishing order " + order.getId() + " with creditAmount " + order.getCreditAmount());
+    	System.out.println("\nPublishing order " + order.getId() + " with creditAmount " + order.getCreditAmount());
         OrderCreatedEvent creditOrderEvent = new OrderCreatedEvent()
                 .setCustomerId(order.getCustomerId())
                 .setOrderId(order.getId())

@@ -27,18 +27,16 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     public CreditVerdictEvent handleEvent(CreditOrderEvent event) {
     	if (event.getCustomerId() == null) {
     		System.out.println("Received a credit order event without a valid customer id, returning declined to order service");
-    		return new CreditVerdictEvent().status(DECLINED);
+    		return new CreditVerdictEvent().status(DECLINED).setRejectionReason("Customer not found");
     	}
     	System.out.println("Handling credit check request from order service with order id: " + event.getOrderId() + ", customer id: " + event.getCustomerId() + " and credit amount: " + event.getCreditAmount());
         Integer customerId = event.getCustomerId();
-        int creditAmount = event.getCreditAmount();
         CreditVerdictEvent creditVerdictEvent = new CreditVerdictEvent()
-                .orderId(event.getOrderId())
-                .status(DECLINED);
+                .orderId(event.getOrderId());
         customerRepository
                 .findById(customerId)
-                .ifPresent(customer -> deductUserBalance(creditAmount, creditVerdictEvent, customer));
-        System.out.println("Returning credit verdict to order service for order " + creditVerdictEvent.getOrderId() + " and status " + creditVerdictEvent.getStatus());
+                .ifPresent(customer -> deductUserBalance(event.getCreditAmount(), creditVerdictEvent, customer));
+        System.out.println("Returning credit verdict to order service for order " + creditVerdictEvent.getOrderId() + " and status " + creditVerdictEvent.getStatus() + "\n\n");
         return creditVerdictEvent;
     }
 
@@ -48,6 +46,10 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
             customer.setBalance(userBalance - creditAmount);
             customerRepository.save(customer);
             creditVerdictEvent.status(APPROVED);
+        } else {
+        	creditVerdictEvent
+        		.setRejectionReason("Insufficient credit")
+        		.status(DECLINED);;
         }
     }
 
