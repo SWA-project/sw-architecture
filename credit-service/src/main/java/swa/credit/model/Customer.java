@@ -1,13 +1,16 @@
 package swa.credit.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
 
 @ToString
 @AllArgsConstructor
@@ -21,6 +24,9 @@ public class Customer {
     private Integer id;
     private double balance;
 
+    @OneToMany(mappedBy="customer")
+    private List<Credit> customerCredits;
+    
     public Customer() {
     }
 
