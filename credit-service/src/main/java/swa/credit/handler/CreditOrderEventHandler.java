@@ -42,7 +42,7 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     												.status(DECLINED);
 
         this.customerRepository
-	      .findById(event.getCustomerId())
+	      .findByCustomerId(event.getCustomerId())
 	      .ifPresent(customer -> {
 	      	this.makeCreditVerdict(event, creditVerdictEvent, customer);
 	      });
@@ -52,7 +52,7 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     }
     
     private void makeCreditVerdict(CreditOrderEvent event, CreditVerdictEvent creditVerdictEvent, Customer customer) {
-    	int customerCreditTotal = getCustomerCreditTotal(event.getCustomerId());
+    	int customerCreditTotal = getCustomerCreditTotal(customer);
     	
         if (customer.getBalance() >= event.getCreditAmount() + customerCreditTotal) {
             creditVerdictEvent.status(APPROVED);
@@ -64,10 +64,10 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
         }
     }
     
-    private int getCustomerCreditTotal(Integer customerId) {
+    private int getCustomerCreditTotal(Customer customer) {
     	int customerCreditTotal = 0;
     	
-		List<Credit> credits = creditRepository.findByCustomerId(customerId);	
+		List<Credit> credits = customer.getCustomerCredits();	
     	
 		for (Credit credit : credits) {
 			customerCreditTotal = customerCreditTotal + credit.getAmount();

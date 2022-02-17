@@ -1,6 +1,7 @@
 package swa.credit.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -26,7 +27,7 @@ public class Credit {
 	private Integer orderId;
 	private int amount;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="customer_id", nullable=false)
 	private Customer customer;
 
@@ -56,7 +57,5 @@ public class Credit {
 		this.customer = customer;
 		return this;
 	}
-	
-	
-	
+
 }
