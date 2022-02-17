@@ -1,5 +1,9 @@
 package swa.credit.service;
 
+import java.time.Duration;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,45 +13,41 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.util.function.Tuple2;
-import swa.credit.model.Transaction;
-import swa.credit.repository.TransactionRepository;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.stream.Stream;
+import swa.credit.model.Credit;
+import swa.credit.repository.CreditRepository;
 
 @Service
-public class TransactionService {
+public class CreditService {
 
-    private final TransactionRepository transactionRepository;
+    private final CreditRepository creditRepository;
     private final Scheduler jdbcScheduler;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository,
+    public CreditService(CreditRepository transactionRepository,
                               Scheduler jdbcScheduler) {
-        this.transactionRepository = transactionRepository;
+        this.creditRepository = transactionRepository;
         this.jdbcScheduler = jdbcScheduler;
     }
 
-    public Flux<Transaction> getAll() {
+    public Flux<Credit> getAll() {
         return Flux.defer(
-                () -> Flux.fromIterable(transactionRepository.findAll()))
+                () -> Flux.fromIterable(creditRepository.findAll()))
                 .subscribeOn(jdbcScheduler);
     }
 
-    public Flux<List<Transaction>> reactiveGetAll() {
+    public Flux<List<Credit>> reactiveGetAll() {
         Flux<Long> interval = Flux.interval(Duration.ofMillis(2000));
-        Flux<List<Transaction>> transactionFlux = Flux.fromStream(
-                Stream.generate(transactionRepository::findAll));
+        Flux<List<Credit>> transactionFlux = Flux.fromStream(
+                Stream.generate(creditRepository::findAll));
         return Flux.zip(interval, transactionFlux)
                 .map(Tuple2::getT2);
     }
 
-    public Mono<Transaction> getOrderById(Integer id) {
+    public Mono<Credit> getOrderById(Integer id) {
         return Mono.fromCallable(
-                () -> transactionRepository.findById(id)
+                () -> creditRepository.findById(id)
                         .orElseThrow(() -> new ResponseStatusException(
-                                HttpStatus.NOT_FOUND, "Transaction id: " + id + " does not exist")))
+                                HttpStatus.NOT_FOUND, "Credit id: " + id + " does not exist")))
                 .subscribeOn(jdbcScheduler);
     }
 

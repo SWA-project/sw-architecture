@@ -3,6 +3,8 @@ package swa.credit.handler;
 import static swa.credit.enums.VerdictStatus.APPROVED;
 import static swa.credit.enums.VerdictStatus.DECLINED;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +12,21 @@ import org.springframework.stereotype.Component;
 
 import swa.credit.dto.CreditOrderEvent;
 import swa.credit.dto.CreditVerdictEvent;
+import swa.credit.model.Credit;
 import swa.credit.model.Customer;
-import swa.credit.repository.CreditOrderRepository;
+import swa.credit.repository.CreditRepository;
+import swa.credit.repository.CustomerRepository;
 
 @Component
 public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, CreditVerdictEvent> {
 
-    private final CreditOrderRepository customerRepository;
+    private final CustomerRepository customerRepository;
+    private final CreditRepository creditRepository;
 
     @Autowired
-    public CreditOrderEventHandler(CreditOrderRepository customerRepository) {
+    public CreditOrderEventHandler(CustomerRepository customerRepository, CreditRepository creditRepository) {
         this.customerRepository = customerRepository;
+        this.creditRepository = creditRepository;
     }
 
     @Transactional
@@ -30,27 +36,50 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     		return new CreditVerdictEvent().status(DECLINED).setRejectionReason("Customer not found");
     	}
     	System.out.println("Handling credit check request from order service with order id: " + event.getOrderId() + ", customer id: " + event.getCustomerId() + " and credit amount: " + event.getCreditAmount());
-        Integer customerId = event.getCustomerId();
-        CreditVerdictEvent creditVerdictEvent = new CreditVerdictEvent()
-                .orderId(event.getOrderId());
-        customerRepository
-                .findById(customerId)
-                .ifPresent(customer -> deductUserBalance(event.getCreditAmount(), creditVerdictEvent, customer));
+        
+    	CreditVerdictEvent creditVerdictEvent = new CreditVerdictEvent()
+    												.orderId(event.getOrderId())
+    												.status(DECLINED);
+
+        this.customerRepository
+	      .findById(event.getCustomerId())
+	      .ifPresent(customer -> {
+	      	this.makeCreditVerdict(event, creditVerdictEvent, customer);
+	      });
+        
         System.out.println("Returning credit verdict to order service for order " + creditVerdictEvent.getOrderId() + " and status " + creditVerdictEvent.getStatus() + "\n\n");
         return creditVerdictEvent;
     }
-
-    private void deductUserBalance(int creditAmount, CreditVerdictEvent creditVerdictEvent, Customer customer) {
-        double userBalance = customer.getBalance();
-        if (userBalance >= creditAmount) {
-            customer.setBalance(userBalance - creditAmount);
-            customerRepository.save(customer);
+    
+    private void makeCreditVerdict(CreditOrderEvent event, CreditVerdictEvent creditVerdictEvent, Customer customer) {
+    	int customerCreditTotal = getCustomerCreditTotal(event.getCustomerId());
+    	
+        if (customer.getBalance() >= event.getCreditAmount() + customerCreditTotal) {
             creditVerdictEvent.status(APPROVED);
+            this.saveAsNewCredit(customer, event.getOrderId(), event.getCreditAmount());
         } else {
         	creditVerdictEvent
         		.setRejectionReason("Insufficient credit")
-        		.status(DECLINED);;
+        		.status(DECLINED);
         }
     }
-
+    
+    private int getCustomerCreditTotal(Integer customerId) {
+    	int customerCreditTotal = 0;
+    	
+		List<Credit> credits = creditRepository.findByCustomerId(customerId);	
+    	
+		for (Credit credit : credits) {
+			customerCreditTotal = customerCreditTotal + credit.getAmount();
+		}
+    	
+    	return customerCreditTotal;
+    }
+    
+    private void saveAsNewCredit(Customer customer, Integer orderId, int amount) {
+        creditRepository.save(new Credit()
+    			.setCustomer(customer)
+    			.setOrderId(orderId)
+    			.setAmount(amount));
+    }
 }
