@@ -31,7 +31,8 @@ class CustomerBonusPoints
   customerId!: number;
 
   @Column({
-    type: DataType.FLOAT
+    type: DataType.FLOAT,
+    unique: true
   })
   orderId!: number;
 

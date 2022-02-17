@@ -1,17 +1,21 @@
+import {
+  CustomerBonusPointsAttributes,
+  CustomerBonusPointsCreationAttributes
+} from './../types/models';
 import { CustomerBonusPoints } from '../models';
 
-const create = async (
-  customerId: number,
-  orderId: number,
-  points: number
-): Promise<CustomerBonusPoints> => {
+const create = async ({
+  customerId,
+  points,
+  orderId
+}: CustomerBonusPointsCreationAttributes): Promise<CustomerBonusPointsAttributes> => {
   const newBonusPoints = await CustomerBonusPoints.create<CustomerBonusPoints>({
     customerId,
     points,
     orderId
   });
 
-  return newBonusPoints;
+  return newBonusPoints.toJSON();
 };
 
 const deleteByOrderId = async (orderId: number) => {

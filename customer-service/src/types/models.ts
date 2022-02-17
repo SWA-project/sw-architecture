@@ -1,6 +1,6 @@
 import { Optional } from 'sequelize';
 
-interface CreatedAtUpdatedAt {
+export interface CreatedAtUpdatedAt {
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -10,11 +10,12 @@ export interface CustomerAttributes extends CreatedAtUpdatedAt {
   firstName: string;
   lastName: string;
   ssn: string;
+  bonusPoints: CustomerBonusPointsAttributes[];
 }
 
 export type CustomerCreationAttributes = Optional<
   CustomerAttributes,
-  'id' | 'createdAt' | 'updatedAt'
+  'id' | 'createdAt' | 'updatedAt' | 'lastName' | 'bonusPoints'
 >;
 
 export interface CustomerBonusPointsAttributes extends CreatedAtUpdatedAt {

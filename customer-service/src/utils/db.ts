@@ -6,16 +6,23 @@ const sequelize = new Sequelize(DATABASE_URL, {
   models: [Customer, CustomerBonusPoints]
 });
 
-const connectToDatabase = async () => {
-  try {
-    await sequelize.authenticate();
-    await sequelize.sync({ force: true });
-    console.log('connected to the database');
+const insertInitialData = async () => {
+  const isInitialUserInDb = await Customer.findByPk(1);
+  if (!isInitialUserInDb) {
     await Customer.create({
       id: 1,
       firstName: 'Ossi',
       ssn: '010101-1111'
     });
+  }
+};
+
+const connectToDatabase = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    console.log('connected to the database');
+    await insertInitialData();
   } catch (err) {
     console.log('failed to connect to the database');
     console.log(err);

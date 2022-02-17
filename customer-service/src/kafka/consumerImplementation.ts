@@ -1,41 +1,14 @@
-import { KafkaProducer } from './KafkaProducer';
+import { OrderRollBackMessageValue } from './../types/kafka';
 import { EachMessageHandler, EachMessagePayload } from 'kafkajs';
+
+import producer from './producerImplementation';
 
 import customerService from '../services/customer';
 import bonusPointsService from '../services/bonusPoints';
-
-enum CustomerFoundStatus {
-  FOUND = 'CUSTOMERFOUND',
-  NOTFOUND = 'CUSTOMERNOTFOUND'
-}
-
-interface CustomerFoundEventResponseMessageValue {
-  orderId: number;
-  status: CustomerFoundStatus;
-}
-
-interface VerifyCustomerMessageValue {
-  customerId: number;
-  orderId: number;
-  creditAmount: number;
-}
-
-const sendCustomerFoundEvent = async (
-  value: CustomerFoundEventResponseMessageValue
-) => {
-  const producer = KafkaProducer.getInstance().producer;
-
-  const responseTopic = 'customer-order';
-  const finalMessage = {
-    value: JSON.stringify(value),
-    partition: 0
-  };
-
-  await producer.send({
-    topic: responseTopic,
-    messages: [finalMessage]
-  });
-};
+import {
+  VerifyCustomerMessageValue,
+  CustomerFoundStatus
+} from '../types/kafka';
 
 const handleVerifyCustomerEvent = async (payload: EachMessagePayload) => {
   const { message } = payload;
@@ -43,7 +16,7 @@ const handleVerifyCustomerEvent = async (payload: EachMessagePayload) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { customerId, orderId, creditAmount }: VerifyCustomerMessageValue =
     JSON.parse(valueString);
-  const customer = await customerService.getById(customerId);
+  const customer = await customerService.findById(customerId);
 
   const responseMessageValueObject = {
     orderId
@@ -51,7 +24,11 @@ const handleVerifyCustomerEvent = async (payload: EachMessagePayload) => {
 
   if (customer) {
     try {
-      await bonusPointsService.create(customerId, orderId, creditAmount);
+      await bonusPointsService.create({
+        customerId,
+        orderId,
+        points: creditAmount
+      });
     } catch (e) {
       // do something??
     }
@@ -61,18 +38,26 @@ const handleVerifyCustomerEvent = async (payload: EachMessagePayload) => {
       status: CustomerFoundStatus.FOUND
     };
 
-    await sendCustomerFoundEvent(responseMessageValue);
+    await producer.sendCustomerFoundEvent(responseMessageValue);
   } else {
     const responseMessageValue = {
       ...responseMessageValueObject,
       status: CustomerFoundStatus.NOTFOUND
     };
-    await sendCustomerFoundEvent(responseMessageValue);
+    await producer.sendCustomerFoundEvent(responseMessageValue);
   }
 };
 
 const orderCustomerTopicHandler = async (payload: EachMessagePayload) => {
   await handleVerifyCustomerEvent(payload);
+};
+
+const orderRollbackTopicHandler = async (payload: EachMessagePayload) => {
+  const { message } = payload;
+  const valueString = message.value.toString();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { orderId }: OrderRollBackMessageValue = JSON.parse(valueString);
+  await bonusPointsService.deleteByOrderId(orderId);
 };
 
 const eachMessageHandler: EachMessageHandler = async (payload) => {
@@ -84,6 +69,8 @@ const eachMessageHandler: EachMessageHandler = async (payload) => {
   switch (topic) {
     case 'order-customer':
       return await orderCustomerTopicHandler(payload);
+    case 'order-rollback':
+      return await orderRollbackTopicHandler(payload);
     default:
       return;
   }

@@ -2,6 +2,7 @@ import { EachMessagePayload, Kafka } from 'kafkajs';
 import { KafkaProducer } from './KafkaProducer';
 import config from '../utils/config';
 import { eachMessageHandler } from './consumerImplementation';
+
 const { KAFKA_CLIENT_ID, KAFKA_BROKERS } = config;
 
 const kafkaConfig = {
