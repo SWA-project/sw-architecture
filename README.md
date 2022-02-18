@@ -2,7 +2,7 @@
 
 # Running the services
 
-Before running the services, startup the mysql *database* and *kafka* containers. 
+Before running the services, startup the *kafka* containers. 
 
 Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. 
 
@@ -19,21 +19,60 @@ Next, head to kafka manager at `http://localhost:9000` and
   - credit-order
   - order-rollback
 
-## Run the Order service
+Go to `/order-service` and run `./gradlew build`
 
-Go to `/order-service` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
+Go to `/credit-service` and run `./gradlew build`
 
-## Credit service
 
-Go to `/credit` and run `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
 
-## Customer service
+Go to `/docker`
+
+Set DOCKER_HOST_IP environment variable (IMPORTANT!): `export DOCKER_HOST_IP=<LOCAL_MACHINE_IP>`
+
+Run `docker-compose -f docker-compose.kafka.yml up --build` (Might take a while, at least at first time if no image layers present on cache)
+
+All services should now be running.
+
+## Developing a service
+
+### Order service
+
+Run all other services and the databases in `/docker`: `docker-compose -f docker-compose.services.yml up --scale order-service=0`
+
+Go to `/order-service`
+
+Set environment variables:
+
+| Variable      | Value |
+| ------------- | ------------- |
+| KAFKA_BROKERS | <LOCAL_MACHINE_IP>  |
+| DB_URL | jdbc:mysql://localhost:9199/order_db  |
+| DB_USERNAME  | mysqluser  |
+| DB_PASSWORD  | mysqlpw  |
+
+Now you can run the service locally:  `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
+
+### Credit service
+
+Run all other services and the databases in `/docker`: `docker-compose -f docker-compose.services.yml up --scale credit-service=0`
+
+Go to `/order-service`
+
+Set environment variables:
+
+| Variable      | Value |
+| ------------- | ------------- |
+| KAFKA_BROKERS | <LOCAL_MACHINE_IP>  |
+| DB_URL | jdbc:mysql://localhost:9190/credit_db  |
+| DB_USERNAME  | mysqluser  |
+| DB_PASSWORD  | mysqlpw  |
+
+Now you can run the service locally:  `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
+
+### Customer service
+Run all other services and databases in `/docker`: `docker-compose -f docker-compose.services.yml up --scale customer-service=0 --scale postgres-db=0`
 
 Go to `/customer-service` and see the instructions in the README.md.
-
-## Build the project
-
-Run `.\gradlew build` to build a project and create an executable jar-file. 
 
 ## How to test
 
