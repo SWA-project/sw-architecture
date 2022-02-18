@@ -20,13 +20,12 @@ spring:
           destination: credit-order
         orderRollbackEventPublisher-out-0:
           destination: order-rollback
-      
-        
+
   datasource:
-    url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/order_db?createDatabaseIfNotExist=true
+    url: ${DB_URL}
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: mysqlpw
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     maximum-pool-size: 100
   jpa:
     hibernate:
