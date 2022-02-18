@@ -4,6 +4,9 @@ server:
 spring:
   cloud:
     stream:
+      kafka:
+        binder:
+          brokers: ${DOCKER_HOST_IP:localhost}
       function:
         definition: orderCreatedEventPublisher;customerCheckEventProcessor;transactionEventProcessor;orderRollbackEventPublisher;
       bindings:
@@ -17,6 +20,8 @@ spring:
           destination: credit-order
         orderRollbackEventPublisher-out-0:
           destination: order-rollback
+      
+        
   datasource:
     url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/order_db?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
