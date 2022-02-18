@@ -6,7 +6,7 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: ${KAFKA_BROKER_ADDRESS:localhost}
+          brokers: ${KAFKA_BROKERS:localhost}
       function:
         definition: orderCreatedEventPublisher;customerCheckEventProcessor;transactionEventProcessor;orderRollbackEventPublisher;
       bindings:
