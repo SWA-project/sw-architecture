@@ -4,6 +4,7 @@ import {
   CustomerBonusPointsAttributes
 } from './../types/models';
 import { Customer, CustomerBonusPoints } from '../models';
+import kafkaProducer from '../kafka/producerImplementation';
 
 interface CustomerFullData extends CustomerAttributes {
   bonusPointsTotal: number;
@@ -16,6 +17,8 @@ const create = async (
     customerCreationAttributes
   );
   const customerAttributes = newCustomer.toJSON();
+  await kafkaProducer.sendCustomerCreatedEvent(customerAttributes);
+
   const bonusPointsArray: CustomerBonusPointsAttributes[] = [];
   const fullCustomerData = {
     ...customerAttributes,
