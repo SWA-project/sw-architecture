@@ -13,16 +13,20 @@ import {
 const handleVerifyCustomerEvent = async (payload: EachMessagePayload) => {
   const { message } = payload;
   const valueString = message.value.toString();
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { customerId, orderId, creditAmount }: VerifyCustomerMessageValue =
     JSON.parse(valueString);
-  const customer = await customerService.findById(customerId);
+
+  const customer = customerId
+    ? await customerService.findById(customerId)
+    : null;
 
   const responseMessageValueObject = {
     orderId
   };
 
-  if (customer) {
+  if (customer && customerId && orderId && creditAmount) {
     try {
       await bonusPointsService.create({
         customerId,

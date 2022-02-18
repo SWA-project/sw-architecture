@@ -14,9 +14,9 @@ export interface CustomerFoundEventResponseMessageValue {
 }
 
 export interface VerifyCustomerMessageValue {
-  customerId: number;
-  orderId: number;
-  creditAmount: number;
+  customerId?: number;
+  orderId?: number;
+  creditAmount?: number;
 }
 
 export interface OrderRollBackMessageValue {
