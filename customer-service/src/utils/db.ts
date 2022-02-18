@@ -1,15 +1,18 @@
 import { Sequelize } from 'sequelize-typescript';
 import { DATABASE_URL } from './config';
 import { Customer, CustomerBonusPoints } from '../models';
+import customerService from '../services/customer';
+
 const sequelize = new Sequelize(DATABASE_URL, {
   dialectOptions: {},
   models: [Customer, CustomerBonusPoints]
 });
 
 const insertInitialData = async () => {
-  const isInitialUserInDb = await Customer.findByPk(1);
+  const isInitialUserInDb = await customerService.findById(1);
+
   if (!isInitialUserInDb) {
-    await Customer.create({
+    await customerService.create({
       id: 1,
       firstName: 'Ossi',
       ssn: '010101-1111'
