@@ -19,7 +19,7 @@ spring:
           destination: order-rollback
   datasource:
     url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/order_db?createDatabaseIfNotExist=true
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: mysqlpw
     maximum-pool-size: 100

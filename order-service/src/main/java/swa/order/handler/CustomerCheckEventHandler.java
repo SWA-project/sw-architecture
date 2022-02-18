@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.core.scheduler.Scheduler;
 import swa.order.dto.CustomerCheckEvent;
 import swa.order.dto.OrderCreatedEvent;
 import swa.order.model.CreditOrder;
