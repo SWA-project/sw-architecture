@@ -2,7 +2,7 @@
 
 # Running the services
 
-Before running the services, startup the mysql *database* and *kafka* containers. 
+Before running the services, startup the *kafka* containers. 
 
 Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. 
 
