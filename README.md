@@ -31,7 +31,42 @@ Go to `/credit` and run `./gradlew bootRun` or `./gradlew clean bootRun` if nece
 
 Go to `/customer-service` and see the instructions in the README.md.
 
+## Build the project
+
+Run `.\gradlew build` to build a project and create an executable jar-file. 
+
+## How to test
+
+1. First post balance into customers account using Credit Service endpoint.
+2. Then post a new credit order with Order Service endpoint.
+3. Get the credit order status (and other details) with customerId using Order Service endpoint.
+
+Endpoints are here below.
+
 ## Endpoints 
+
+### Credit service
+
+**Add customer data**:
+
+Send Send a *POST* request to `localhost:9191/customers` with the body 
+
+```
+{
+  "customerId": 1,
+  "balance": 1000
+}
+```
+Response:
+
+```
+{
+    "customerId": 1,
+    "balance": 1000.0,
+    "totalCredits": 0
+}
+```
+The field totalCredits is the sum of all existing approved credit requests.
 
 ### Order Service
 
@@ -87,29 +122,6 @@ Note that if there is no customer with id 1 in the credit service database, the 
 
 Send a *GET* request to `http://localhost:9191/orders`, and you get a list of all orders.
 
-
-### Credit service
-
-**Add customer data**:
-
-Send Send a *POST* request to `localhost:9191/customers` with the body 
-
-```
-{
-  "customerId": 1,
-  "balance": 1000
-}
-```
-Response:
-
-```
-{
-    "customerId": 1,
-    "balance": 1000.0,
-    "totalCredits": 0
-}
-```
-The field totalCredits is the sum of all existing approved credit requests.
 
 **Get all customer data**
 

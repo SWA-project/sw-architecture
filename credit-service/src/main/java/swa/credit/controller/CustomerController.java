@@ -32,8 +32,10 @@ public class CustomerController {
     		updatedCustomer = match.get();
     		updatedCustomer.setBalance(customer.getBalance());
 			this.customerRepository.save(updatedCustomer);
+			System.out.print("Updated customer: " + updatedCustomer.getCustomerId() + ", balance: " + updatedCustomer.getBalance() + "\n");
     	} else {
     		updatedCustomer = this.customerRepository.save(customer);
+			System.out.print("New customer added ID: " + updatedCustomer.getCustomerId() + ", balance: " + updatedCustomer.getBalance() + "\n");
     	}
     	return new CustomerDTO()
     			.setBalance(updatedCustomer.getBalance())
