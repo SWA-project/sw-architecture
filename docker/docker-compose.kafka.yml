@@ -1,7 +1,7 @@
-version: '3'
+version: "3"
 
 services:
-  mysql-db:
+  order-db:
     image: mysql
     restart: always
     environment:
@@ -9,34 +9,57 @@ services:
       MYSQL_USER: mysqluser
       MYSQL_PASSWORD: mysqlpw
     ports:
-      - '9190:3306'
+      - "9185:3306"
     cap_add:
-      - SYS_NICE 
-  phpmyadmin:
+      - SYS_NICE
+  order-phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: pma
+    container_name: order-pma
     links:
-      - mysql-db
+      - order-db
     environment:
-      PMA_HOST: mysql-db
+      PMA_HOST: order-db
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
     restart: always
     ports:
-      - 8085:80
+      - 9186:80
+  credit-db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlpw
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpw
+    ports:
+      - "9187:3306"
+    cap_add:
+      - SYS_NICE
+  credit-phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: credit-pma
+    links:
+      - credit-db
+    environment:
+      PMA_HOST: credit-db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 9188:80
   postgres-db:
-      image: postgres
-      ports:
-        - 9189:5432
-      restart: always
-      healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U postgres"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-      environment:
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: customer-db
+    image: postgres
+    ports:
+      - 9189:5432
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: customer-db
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
@@ -46,7 +69,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
       GUNICORN_ACCESS_LOGFILE: /dev/null
     ports:
-      - "8086:80"
+      - "9190:80"
   zoo:
     image: zookeeper:3.4.9
     hostname: zoo
