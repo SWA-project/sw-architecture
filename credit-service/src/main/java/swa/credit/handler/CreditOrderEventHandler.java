@@ -43,9 +43,11 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
 
         this.customerRepository
 	      .findByCustomerId(event.getCustomerId())
-	      .ifPresent(customer -> {
-	      	this.makeCreditVerdict(event, creditVerdictEvent, customer);
-	      });
+	      .ifPresentOrElse(
+	    		  customer -> {
+	    			  this.makeCreditVerdict(event, creditVerdictEvent, customer);
+	    		  }, 
+	    		  () -> this.rejectForCustomerNotFound(event, creditVerdictEvent));
         
         System.out.println("Returning credit verdict to order service for order " + creditVerdictEvent.getOrderId() + " and status " + creditVerdictEvent.getStatus() + "\n\n");
         return creditVerdictEvent;
@@ -81,5 +83,9 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     			.setCustomer(customer)
     			.setOrderId(orderId)
     			.setAmount(amount));
+    }
+    
+    private void rejectForCustomerNotFound(CreditOrderEvent event, CreditVerdictEvent creditVerdictEvent) {
+    	creditVerdictEvent.setRejectionReason("No records for customer with id " + event.getCustomerId() + " was found in credit service");
     }
 }
