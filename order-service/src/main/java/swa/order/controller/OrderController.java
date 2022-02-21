@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import swa.order.dto.OrderRequest;
+import swa.order.dto.OrderRequestDTO;
 import swa.order.model.CreditOrder;
 import swa.order.service.OrderService;
 
@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     @PostMapping("orders")
-    public CreditOrder createOrder(@Valid @RequestBody OrderRequest order) {
+    public CreditOrder createOrder(@Valid @RequestBody OrderRequestDTO order) {
         return orderService.createOrder(order);
     }
 
