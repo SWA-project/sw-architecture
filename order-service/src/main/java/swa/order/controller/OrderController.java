@@ -2,6 +2,8 @@ package swa.order.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,7 @@ public class OrderController {
 
     @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
     @PostMapping("orders")
-    public CreditOrder createOrder(@RequestBody OrderRequest order) {
+    public CreditOrder createOrder(@Valid @RequestBody OrderRequest order) {
         return orderService.createOrder(order);
     }
 
