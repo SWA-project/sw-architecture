@@ -6,7 +6,7 @@ export const sendOrder = async (newObject) => {
 }
 
 export const fetchOrders = async () => {
-    const response = await axios.get(`http://localhost:9192/orders/`)
+    const response = await axios.get(`http://localhost:9192/orders`)
     return response.data
 }
 
