@@ -18,7 +18,7 @@ spring:
         orderRollbackEventPublisher-out-0:
           destination: order-rollback
   datasource:
-    url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9190/order_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9185/order_db?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: mysqlpw
