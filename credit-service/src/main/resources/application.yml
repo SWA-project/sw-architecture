@@ -17,11 +17,13 @@ spring:
     username: root
     password: mysqlpw
     maximum-pool-size: 100
+    initialization-mode: always
   jpa:
     hibernate:
       ddl-auto: create
     database-platform: org.hibernate.dialect.MySQL5Dialect
     generate-ddl: true
+    defer-datasource-initialization: true
 
 logging:
   level:
