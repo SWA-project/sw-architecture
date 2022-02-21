@@ -32,8 +32,8 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     @Transactional
     public CreditVerdictEvent handleEvent(CreditOrderEvent event) {
     	if (event.getCustomerId() == null) {
-    		System.out.println("Received a credit order event without a valid customer id, returning declined to order service");
-    		return new CreditVerdictEvent().status(DECLINED).setRejectionReason("Customer not found");
+    		System.out.println("Received a credit order event without a valid customer id, returning order as declined");
+    		return new CreditVerdictEvent().status(DECLINED).setRejectionReason("Customer id is required");
     	}
     	System.out.println("Handling credit check request from order service with order id: " + event.getOrderId() + ", customer id: " + event.getCustomerId() + " and credit amount: " + event.getCreditAmount());
         

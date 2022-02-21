@@ -3,7 +3,7 @@ package swa.order.dto;
 import lombok.Data;
 
 @Data
-public class OrderCreatedEvent implements Event {
+public class CustomerCheckEventDTO implements Event {
 
     private static final String EVENT = "CreditRequest";
 
@@ -11,17 +11,17 @@ public class OrderCreatedEvent implements Event {
     private Integer customerId;
     private int creditAmount;
 
-    public OrderCreatedEvent setOrderId(Integer orderId) {
+    public CustomerCheckEventDTO setOrderId(Integer orderId) {
         this.orderId = orderId;
         return this;
     }
 
-    public OrderCreatedEvent setCustomerId(Integer userId) {
+    public CustomerCheckEventDTO setCustomerId(Integer userId) {
         this.customerId = userId;
         return this;
     }
 
-    public OrderCreatedEvent setCreditAmount(int creditAmount) {
+    public CustomerCheckEventDTO setCreditAmount(int creditAmount) {
 		this.creditAmount = creditAmount;
 		return this;
 	}

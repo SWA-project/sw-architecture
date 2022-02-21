@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class OrderRequest {
+public class OrderRequestDTO {
 
 	@Valid
 	@NotNull(message = "Customer id is required.")
