@@ -8,8 +8,6 @@ Set DOCKER_HOST_IP environment variable (IMPORTANT!): `export DOCKER_HOST_IP=<LO
 
 Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. (Might take a while, at least at first time if no image layers present on cache)
 
-Currently, both order service and credit service use the same db, which you can access via phpmyadmin at `http://localhost:8085`.
-
 Next, head to kafka manager at `http://localhost:9000` and 
 
 - create a cluster Click 'Add Cluster' with any name.
