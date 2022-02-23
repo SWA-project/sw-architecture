@@ -6,7 +6,7 @@ import swa.order.enums.CreditCheckStatus;
 
 @ToString
 @Getter
-public class CreditCheckEvent implements Event {
+public class CreditCheckResponseDTO implements Event {
 
     private static final String EVENT = "CreditCheck";
 
@@ -14,20 +14,20 @@ public class CreditCheckEvent implements Event {
     private CreditCheckStatus status;
     private String rejectionReason;
 
-    public CreditCheckEvent() {
+    public CreditCheckResponseDTO() {
     }
 
-    public CreditCheckEvent orderId(Integer orderId) {
+    public CreditCheckResponseDTO orderId(Integer orderId) {
         this.orderId = orderId;
         return this;
     }
 
-    public CreditCheckEvent status(CreditCheckStatus status) {
+    public CreditCheckResponseDTO status(CreditCheckStatus status) {
         this.status = status;
         return this;
     }
     
-    public CreditCheckEvent setRejectionReason(String rejectionReason) {
+    public CreditCheckResponseDTO setRejectionReason(String rejectionReason) {
 		this.rejectionReason = rejectionReason;
 		return this;
 	}

@@ -2,7 +2,7 @@ package swa.order.model;
 
 import lombok.Data;
 import lombok.ToString;
-import swa.order.dto.CreditCheckEvent;
+import swa.order.dto.CreditCheckResponseDTO;
 import swa.order.enums.OrderStatus;
 
 import javax.persistence.Entity;

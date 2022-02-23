@@ -5,15 +5,15 @@ import lombok.ToString;
 
 @ToString
 @Getter
-public class RollbackEvent implements Event {
+public class RollbackEventDTO implements Event {
 	private static final String EVENT = "Rollback";
 
     private Integer orderId;
 
-    public RollbackEvent() {
+    public RollbackEventDTO() {
     }
     
-    public RollbackEvent setOrderId(Integer orderId) {
+    public RollbackEventDTO setOrderId(Integer orderId) {
 		this.orderId = orderId;
 		return this;
 	}

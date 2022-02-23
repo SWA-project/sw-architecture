@@ -56,7 +56,15 @@ Run all other services and databases in `/docker`: `docker-compose -f docker-com
 
 Go to `/customer-service` and see the instructions in the README.md.
 
-## How to test
+# How to test
+
+First start the entire backend with above instructions.
+
+## From user interface
+
+Go to `/front` folder and install dependencies with `npm install` and start the user interface with `npm start`. You are able to send new orders here and start/stop request stream to test capabilites of the system.
+
+## Manually sending requests to the system
 
 1. First post balance into customers account using Credit Service endpoint.
 2. Then post a new credit order with Order Service endpoint.

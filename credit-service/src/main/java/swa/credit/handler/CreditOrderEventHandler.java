@@ -32,8 +32,8 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     @Transactional
     public CreditVerdictEvent handleEvent(CreditOrderEvent event) {
     	if (event.getCustomerId() == null) {
-    		System.out.println("Received a credit order event without a valid customer id, returning declined to order service");
-    		return new CreditVerdictEvent().status(DECLINED).setRejectionReason("Customer not found");
+    		System.out.println("Received a credit order event without a valid customer id, returning order as declined");
+    		return new CreditVerdictEvent().status(DECLINED).setRejectionReason("Customer id is required");
     	}
     	System.out.println("Handling credit check request from order service with order id: " + event.getOrderId() + ", customer id: " + event.getCustomerId() + " and credit amount: " + event.getCreditAmount());
         
@@ -43,9 +43,11 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
 
         this.customerRepository
 	      .findByCustomerId(event.getCustomerId())
-	      .ifPresent(customer -> {
-	      	this.makeCreditVerdict(event, creditVerdictEvent, customer);
-	      });
+	      .ifPresentOrElse(
+	    		  customer -> {
+	    			  this.makeCreditVerdict(event, creditVerdictEvent, customer);
+	    		  }, 
+	    		  () -> this.rejectForCustomerNotFound(event, creditVerdictEvent));
         
         System.out.println("Returning credit verdict to order service for order " + creditVerdictEvent.getOrderId() + " and status " + creditVerdictEvent.getStatus() + "\n\n");
         return creditVerdictEvent;
@@ -81,5 +83,9 @@ public class CreditOrderEventHandler implements EventHandler<CreditOrderEvent, C
     			.setCustomer(customer)
     			.setOrderId(orderId)
     			.setAmount(amount));
+    }
+    
+    private void rejectForCustomerNotFound(CreditOrderEvent event, CreditVerdictEvent creditVerdictEvent) {
+    	creditVerdictEvent.setRejectionReason("No records for customer with id " + event.getCustomerId() + " was found in credit service");
     }
 }

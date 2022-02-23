@@ -6,22 +6,22 @@ import swa.order.enums.CustomerStatus;
 
 @ToString
 @Getter
-public class CustomerCheckEvent implements Event {
+public class CustomerCheckResponseDTO implements Event {
 
     private static final String EVENT = "CustomerCheck";
 
     private Integer orderId;
     private CustomerStatus status;
 
-    public CustomerCheckEvent() {
+    public CustomerCheckResponseDTO() {
     }
 
-    public CustomerCheckEvent orderId(Integer orderId) {
+    public CustomerCheckResponseDTO orderId(Integer orderId) {
         this.orderId = orderId;
         return this;
     }
 
-    public CustomerCheckEvent status(CustomerStatus status) {
+    public CustomerCheckResponseDTO status(CustomerStatus status) {
         this.status = status;
         return this;
     }

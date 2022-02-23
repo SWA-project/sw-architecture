@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import swa.order.dto.OrderRequest;
+import swa.order.dto.OrderRequestDTO;
 import swa.order.enums.OrderStatus;
-import swa.order.handler.CreditOrderPublisher;
+import swa.order.handler.CustomerCheckPublisher;
 import swa.order.model.CreditOrder;
 import swa.order.repository.CreditOrderRepository;
 
@@ -17,17 +17,17 @@ import swa.order.repository.CreditOrderRepository;
 public class OrderService {
 
     private final CreditOrderRepository creditOrderRepository;
-    private final CreditOrderPublisher creditOrderPublisher;
+    private final CustomerCheckPublisher creditOrderPublisher;
 
     @Autowired
     public OrderService(
             CreditOrderRepository creditOrderRepository,
-            CreditOrderPublisher creditOrderPublisher) {
+            CustomerCheckPublisher creditOrderPublisher) {
         this.creditOrderRepository = creditOrderRepository;
         this.creditOrderPublisher = creditOrderPublisher;
     }
 
-    public CreditOrder createOrder(OrderRequest order) {
+    public CreditOrder createOrder(OrderRequestDTO order) {
         CreditOrder creditOrder = getCreditOrder(order);
         CreditOrder savedCreditOrder = creditOrderRepository.save(creditOrder);
         creditOrderPublisher.publish(creditOrder);
@@ -44,7 +44,7 @@ public class OrderService {
                         HttpStatus.NOT_FOUND, "Order id: " + id + " does not exist"));
     }
 
-    private CreditOrder getCreditOrder(final OrderRequest order) {
+    private CreditOrder getCreditOrder(final OrderRequestDTO order) {
         return new CreditOrder()
                 .setCustomerId(order.getCustomerId())
                 .setCreditAmount(order.getCreditAmount())
