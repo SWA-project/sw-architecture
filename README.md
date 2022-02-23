@@ -19,6 +19,12 @@ Next, head to kafka manager at `http://localhost:9000` and
   - credit-order
   - order-rollback
 
+Go to `/order-service` and run:
+
+`./gradlew build`
+
+Go to `/credit-service` 
+
 Run `docker-compose -f docker-compose.services.yml up --build` (Might take a while, at least at first time if no image layers present on cache)
 
 All services should now be running.
