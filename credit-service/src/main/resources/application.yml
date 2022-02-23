@@ -15,10 +15,10 @@ spring:
         creditOrderEventProcessor-out-0:
           destination: credit-order
   datasource:
-    url: ${DB_URL}
+    url: ${DB_URL:jdbc:mysql://localhost:9190/credit_db}
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME:mysqluser}
+    password: ${DB_PASSWORD:mysqlpw}
     maximum-pool-size: 100
   jpa:
     hibernate:
