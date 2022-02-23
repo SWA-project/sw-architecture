@@ -4,7 +4,9 @@
 
 Before running the services, startup the *kafka* containers. 
 
-Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. 
+Set DOCKER_HOST_IP environment variable (IMPORTANT!): `export DOCKER_HOST_IP=<LOCAL_MACHINE_IP>`
+
+Go to `/docker` and run `docker-compose -f docker-compose.kafka.yml up --build`. (Might take a while, at least at first time if no image layers present on cache)
 
 Currently, both order service and credit service use the same db, which you can access via phpmyadmin at `http://localhost:8085`.
 
@@ -19,17 +21,7 @@ Next, head to kafka manager at `http://localhost:9000` and
   - credit-order
   - order-rollback
 
-Go to `/order-service` and run `./gradlew build`
-
-Go to `/credit-service` and run `./gradlew build`
-
-
-
-Go to `/docker`
-
-Set DOCKER_HOST_IP environment variable (IMPORTANT!): `export DOCKER_HOST_IP=<LOCAL_MACHINE_IP>`
-
-Run `docker-compose -f docker-compose.kafka.yml up --build` (Might take a while, at least at first time if no image layers present on cache)
+Run `docker-compose -f docker-compose.services.yml up --build` (Might take a while, at least at first time if no image layers present on cache)
 
 All services should now be running.
 
@@ -37,39 +29,31 @@ All services should now be running.
 
 ### Order service
 
+Make sure all containers of docker-compose.kafka.yml are running!
+
 Run all other services and the databases in `/docker`: `docker-compose -f docker-compose.services.yml up --scale order-service=0`
 
 Go to `/order-service`
-
-Set environment variables:
-
-| Variable      | Value |
-| ------------- | ------------- |
-| KAFKA_BROKERS | <LOCAL_MACHINE_IP>  |
-| DB_URL | jdbc:mysql://localhost:9199/order_db  |
-| DB_USERNAME  | mysqluser  |
-| DB_PASSWORD  | mysqlpw  |
 
 Now you can run the service locally:  `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
 
 ### Credit service
 
+Make sure all containers of docker-compose.kafka.yml are running!
+
 Run all other services and the databases in `/docker`: `docker-compose -f docker-compose.services.yml up --scale credit-service=0`
 
-Go to `/order-service`
+Go to `/credit-service`
 
 Set environment variables:
 
-| Variable      | Value |
-| ------------- | ------------- |
-| KAFKA_BROKERS | <LOCAL_MACHINE_IP>  |
-| DB_URL | jdbc:mysql://localhost:9190/credit_db  |
-| DB_USERNAME  | mysqluser  |
-| DB_PASSWORD  | mysqlpw  |
 
 Now you can run the service locally:  `./gradlew bootRun` or `./gradlew clean bootRun` if necessary. 
 
 ### Customer service
+
+Make sure all containers of docker-compose.kafka.yml are running!
+
 Run all other services and databases in `/docker`: `docker-compose -f docker-compose.services.yml up --scale customer-service=0 --scale postgres-db=0`
 
 Go to `/customer-service` and see the instructions in the README.md.
