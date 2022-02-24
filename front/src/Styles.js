@@ -3,7 +3,7 @@ const Styles = {
         padding: 1,
     },
     containerChild: {
-        width: 700,
+        width: 500,
         float: "left",
         padding: 10,
     },

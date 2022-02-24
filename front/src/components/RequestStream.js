@@ -41,6 +41,17 @@ const RequestStream = () => {
     return (
         <div style={Styles.container}>
             <h3>Make a request stream</h3>
+            <div>
+                <i> By starting a request stream, 
+                    the client side will send requests 
+                    to the server in every second.</i>
+            </div>
+            <div>
+                <i> Requests are generated randomly between user that is identified customer (1)
+                    and user that is not (2).    
+                </i>
+            </div>
+           
             <form style={Styles.buttonChild} onSubmit={requestStream}>
                 <Button type="submit">Start</Button>
             </form>

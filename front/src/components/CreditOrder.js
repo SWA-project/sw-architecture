@@ -40,6 +40,7 @@ const CreditOrder = ( { verdicts } ) => {
                     Credit amount: <Input value={creditAmount} type="number"
                     onChange={(e) => setCreditAmount(e.target.value)} required/>
                 </div>
+                <br></br>
                 <div>
                 <Button type="submit">Send</Button>
                 </div>
@@ -47,8 +48,7 @@ const CreditOrder = ( { verdicts } ) => {
             <div>
             <h3>New order</h3>
                 {order != null?
-                <p key={order.id}>Order id: {order.id}, 
-                status: {order.status}, credit amount: {order.creditAmount}, 
+                <p key={order.id}>Order id: {order.id}, status: {order.status}, credit amount: {order.creditAmount}, 
                 rejection reason: {order.rejectionReason}</p>
                 : null}
             </div>
@@ -56,10 +56,10 @@ const CreditOrder = ( { verdicts } ) => {
             <h3>Verdicts</h3>
                 {verdicts.map((r) =>  (
                     <p key={r.id} >Order id: {r.id}, 
-                    customer id: {r.customerId} 
-                    status: {r.status}, 
+                    customer id: <b>{r.customerId}</b>,  
+                    status: <b>{r.status}</b>, 
                     credit amount: {r.creditAmount}, 
-                    rejection reason: {r.rejectionReason}</p>
+                    rejection reason: <b>{r.rejectionReason}</b></p>
                 ))}
             </div>
     </div>
