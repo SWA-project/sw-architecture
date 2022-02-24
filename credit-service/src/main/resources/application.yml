@@ -4,6 +4,9 @@ server:
 spring:
   cloud:
     stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_BROKERS}
       function:
         definition: creditOrderEventProcessor
       bindings:
@@ -12,10 +15,10 @@ spring:
         creditOrderEventProcessor-out-0:
           destination: credit-order
   datasource:
-    url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9187/credit_db?createDatabaseIfNotExist=true
+    url: ${DB_URL:jdbc:mysql://localhost:9190/credit_db}
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: mysqlpw
+    username: ${DB_USERNAME:mysqluser}
+    password: ${DB_PASSWORD:mysqlpw}
     maximum-pool-size: 100
     initialization-mode: always
   jpa:

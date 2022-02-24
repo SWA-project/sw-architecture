@@ -4,6 +4,9 @@ server:
 spring:
   cloud:
     stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_BROKERS:localhost}
       function:
         definition: customerCheckEventPublisher;customerCheckEventProcessor;creditCheckEventPublisher;creditCheckEventProcessor;orderRollbackEventPublisher;
       bindings:
@@ -17,11 +20,12 @@ spring:
           destination: credit-order
         orderRollbackEventPublisher-out-0:
           destination: order-rollback
+
   datasource:
-    url: jdbc:mysql://${DOCKER_HOST_IP:localhost}:9185/order_db?createDatabaseIfNotExist=true
+    url: ${DB_URL:jdbc:mysql://localhost:9199/order_db}
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: mysqlpw
+    username: ${DB_USERNAME:mysqluser}
+    password: ${DB_PASSWORD:mysqlpw}
     maximum-pool-size: 100
   jpa:
     hibernate:

@@ -8,8 +8,6 @@ import swa.order.OrderServiceApplication;
 @SpringBootTest(classes = OrderServiceApplication.class)
 class OrderServiceApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+	
 
 }
