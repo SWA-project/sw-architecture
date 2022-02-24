@@ -82,7 +82,7 @@ Endpoints are here below.
 
 ### Customer service
 
-** Create a customer **
+**Create a customer**
 
 Send Send a *POST* request to `localhost:3000/customers` with the body
 
