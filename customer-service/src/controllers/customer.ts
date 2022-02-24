@@ -37,7 +37,6 @@ customerRouter.get('/:id', async (req, res) => {
 
 customerRouter.post('/', async (req: Request, res) => {
   try {
-    console.log('here');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { firstName, lastName, ssn } = req.body;
     if (!firstName || !ssn) {
