@@ -5,7 +5,8 @@ import customerService from '../services/customer';
 
 const sequelize = new Sequelize(DATABASE_URL, {
   dialectOptions: {},
-  models: [Customer, CustomerBonusPoints]
+  models: [Customer, CustomerBonusPoints],
+  logging: false
 });
 
 const insertInitialData = async () => {

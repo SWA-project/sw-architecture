@@ -1,0 +1,109 @@
+version: '3.8'
+
+networks:
+  common-network:
+    external: true
+
+services:
+  order-service:
+      build:
+        context: ./../order-service
+        dockerfile: Dockerfile
+      depends_on:
+        mysql-order-db:
+          condition: service_healthy
+      environment:
+          KAFKA_BROKERS: ${DOCKER_HOST_IP}:9092,${DOCKER_HOST_IP}:9093,${DOCKER_HOST_IP}:9094
+          DB_URL: jdbc:mysql://mysql-order-db:3306/order_db
+          DB_USERNAME: mysqluser
+          DB_PASSWORD: mysqlpw
+      ports:
+          - 9192:9192
+
+  credit-service:
+      build:
+        context: ./../credit-service
+        dockerfile: Dockerfile
+      depends_on:
+        mysql-credit-db:
+          condition: service_healthy
+      environment:
+          KAFKA_BROKERS: ${DOCKER_HOST_IP}:9092,${DOCKER_HOST_IP}:9093,${DOCKER_HOST_IP}:9094
+          DB_URL: jdbc:mysql://mysql-credit-db:3306/credit_db
+          DB_USERNAME: mysqluser
+          DB_PASSWORD: mysqlpw
+      ports:
+          - 9191:9191
+  
+  customer-service:
+    build:
+      context: ./../customer-service
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres-db:5432/customer-db
+      KAFKA_BROKERS: ${DOCKER_HOST_IP}:9092;${DOCKER_HOST_IP}:9093;${DOCKER_HOST_IP}:9094
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    ports: 
+      - 3000:3000
+
+  postgres-db:
+      image: postgres
+      ports:
+        - 5432:5432
+      restart: always
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+      environment:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: customer-db
+
+  mysql-order-db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: order_db
+      MYSQL_ROOT_PASSWORD: mysqlpw
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpw
+    ports:
+      - '9199:3306'
+    cap_add:
+      - SYS_NICE 
+    healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+
+  mysql-credit-db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: credit_db
+      MYSQL_ROOT_PASSWORD: mysqlpw
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpw
+    ports:
+      - '9190:3306'
+    cap_add:
+      - SYS_NICE 
+    healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+
+    environment:
+      PMA_HOST: mysql-credit-db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8085:80

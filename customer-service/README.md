@@ -1,9 +1,6 @@
 # Customer service
 
-## DEV env using docker
-
-
-### Customer-service
+## DEV
 
 Make sure kafka is running
 
