@@ -80,6 +80,20 @@ Endpoints are here below.
 
 ## Endpoints 
 
+### Customer service
+
+**Create a customer**
+
+Send Send a *POST* request to `localhost:3000/customers` with the body
+
+```
+{
+    "firstName": "Ossi",
+    "lastName": "Tester",
+    "ssn": "010101-1111"
+}
+```
+
 ### Credit service
 
 **Add customer data**:
@@ -161,3 +175,5 @@ Send a *GET* request to `http://localhost:9191/orders`, and you get a list of al
 **Get all customer data**
 
 Sending a *GET* request to `http://localhost:9191/customers` will return data of all customers in credit service.
+
+Sending a *GET* request to `http://localhost:3000/customers` will return data of all customers in customer service.
