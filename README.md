@@ -175,3 +175,5 @@ Send a *GET* request to `http://localhost:9191/orders`, and you get a list of al
 **Get all customer data**
 
 Sending a *GET* request to `http://localhost:9191/customers` will return data of all customers in credit service.
+
+Sending a *GET* request to `http://localhost:3000/customers` will return data of all customers in customer service.
