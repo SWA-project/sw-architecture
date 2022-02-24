@@ -5,13 +5,15 @@ import Styles from "../Styles"
 
 const RequestStream = () => {
     const [stop, setStop] = useState(false)
+    const existingCustomerId = 1;
+    const nonExistingCustomerId = 1000;
 
     const requestStream = async (event) => {
         event.preventDefault()
         const interval = setInterval(()=> {
             if (stop) clearInterval(interval)
             sendRequest()       
-        }, 2000)
+        }, 100)
     }
 
     const sendRequest = async () => {
@@ -19,7 +21,8 @@ const RequestStream = () => {
             return
         }
 
-        let ids = [1, 2]
+        
+        const ids = [existingCustomerId, nonExistingCustomerId]
         const credits = [10, 20, 50, 100, 1000]
 
         const newOrder = {
@@ -47,8 +50,8 @@ const RequestStream = () => {
                     to the server in every second.</i>
             </div>
             <div>
-                <i> Requests are generated randomly between user that is identified customer (1)
-                    and user that is not (2).    
+                <i> Requests are generated randomly between user that is identified customer ({`${existingCustomerId}`})
+                    and user that is not ({`${nonExistingCustomerId}`}).    
                 </i>
             </div>
            
