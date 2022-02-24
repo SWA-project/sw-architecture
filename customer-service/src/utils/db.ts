@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { DATABASE_URL } from './config';
 import { Customer, CustomerBonusPoints } from '../models';
-import customerService from '../services/customer';
 
 const sequelize = new Sequelize(DATABASE_URL, {
   dialectOptions: {},
@@ -9,17 +8,8 @@ const sequelize = new Sequelize(DATABASE_URL, {
   logging: false
 });
 
-const insertInitialData = async () => {
-  const isInitialUserInDb = await customerService.findById(1);
-
-  if (!isInitialUserInDb) {
-    await customerService.create({
-      id: 1,
-      firstName: 'Ossi',
-      ssn: '010101-1111'
-    });
-  }
-};
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const insertInitialData = async () => {};
 
 const connectToDatabase = async () => {
   try {
