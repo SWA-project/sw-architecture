@@ -15,7 +15,9 @@ RUN gradle clean build
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV ARTIFACT_NAME=order-service-0.0.1-SNAPSHOT.jar
 ENV APP_HOME=/usr/app/
-    
+EXPOSE 9192
+ENV REQUEST_ORIGIN=http://localhost:3001
+
 WORKDIR $APP_HOME
 COPY --from=TEMP_BUILD_IMAGE $APP_HOME/build/libs/$ARTIFACT_NAME .
 
