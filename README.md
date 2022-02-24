@@ -80,6 +80,20 @@ Endpoints are here below.
 
 ## Endpoints 
 
+### Customer service
+
+** Create a customer **
+
+Send Send a *POST* request to `localhost:3000/customers` with the body
+
+```
+{
+    "firstName": "Ossi",
+    "lastName": "Tester",
+    "ssn": "010101-1111"
+}
+```
+
 ### Credit service
 
 **Add customer data**:
