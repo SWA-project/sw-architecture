@@ -13,7 +13,7 @@ const RequestStream = () => {
         const interval = setInterval(()=> {
             if (stop) clearInterval(interval)
             sendRequest()       
-        }, 100)
+        }, 2000)
     }
 
     const sendRequest = async () => {
